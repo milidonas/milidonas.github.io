@@ -6,7 +6,7 @@ if (headerPlaceholder) {
 headerPlaceholder.innerHTML = `
 <header class="main-header">
 <div class="header-left">
-<a href="index" class="logo-link">
+<a href="/" class="logo-link">
 <div class="logo">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="160" height="auto" viewBox="0 0 1080 300" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
 <rect id="Mesa-de-trabajo1" serif:id="Mesa de trabajo1" x="0" y="0" width="1080" height="300" style="fill:none;"/>
@@ -27,7 +27,7 @@ headerPlaceholder.innerHTML = `
 </div>
 <nav class="main-nav">
 <ul>
-<li><a href="index">Inicio</a></li>
+<li><a href="/">Inicio</a></li>
 <li><a href="products">Nuestras Donas</a></li>
 <li><a href="about">Sobre Nosotros</a></li>
 <li><a href="contact">Contacto</a></li>
@@ -51,7 +51,7 @@ headerPlaceholder.innerHTML = `
 <i class="fas fa-times"></i>
 </button>
 <ul>
-<li><a href="index">Inicio</a></li>
+<li><a href="/">Inicio</a></li>
 <li><a href="products">Nuestras Donas</a></li>
 <li><a href="about">Sobre Nosotros</a></li>
 <li><a href="contact">Contacto</a></li>
