@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#733702">
+    <title>Milidonas - Donas que te donan alegría</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #FEF0E7;
+            --secondary-color: #A6702E;
+            --accent-color: #733702;
+            --success-color: #D9B589;
+            --dark-color: #401801;
+            --color-menu: #FEF0E7;
+        }
+        
+        body {
+            background-color: var(--primary-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: var(--color-menu);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            
+        }
+        
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--accent-color) !important;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--success-color) !important;
+            transform: translateY(-2px);
+        }
+        .logo-nav{
+            width: 180px;
+            height: auto;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--accent-color), var(--dark-color));
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>');
+            background-size: 100px 100px;
+            animation: float 20s infinite linear;
+        }
+
+        .mili-about{
+            width: 250px;
+            border-radius: 0px 0px 10px 10px;
+            transition: .5s all;
+            box-shadow: 8px 8px 2px 1px #a6702e4d;
+        }
+        .mili-about:hover{
+            transition: .5s all;
+            transform: scale(1.05);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            
+        }
+
+        .hero-content h1{
+              font-family: "Climate Crisis", sans-serif;
+        }
+        
+        .section-title {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+            border-radius: 2px;
+        }
+        
+        .donut-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .donut-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .donut-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--success-color));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .donut-image::before {
+            content: '🍩';
+            position: absolute;
+            animation: rotate 10s infinite linear;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(166, 112, 46, 0.4);
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), var(--secondary-color));
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(217, 181, 137, 0.4);
+        }
+        
+        .about-section {
+            background: white;
+            padding: 80px 0;
+            margin: 50px 0;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            z-index: 1050;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.active {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1040;
+            display: none;
+        }
+        
+        .cart-overlay.active {
+            display: block;
+        }
+        
+        .cart-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .cart-total {
+            background: var(--primary-bg);
+            padding: 20px;
+            position: sticky;
+            bottom: 0;
+            border-top: 2px solid var(--accent-color);
+        }
+        
+        .cart-count {
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .price {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Nuevos estilos para el formulario del carrito */
+        .customer-form {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .customer-form .form-control {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+
+        .customer-form label {
+            font-weight: 500;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="SM/LG_WB.svg" alt="Logo" class="d-inline-block align-text-top logo-nav">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#featured">Nuestras Donas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Todas las Donas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="toggleCart()">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                            <span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold mb-4">¡Bienvenidos a Milidonas!</h1>
+                        <p class="lead mb-4 fst-italic">"Donas que te donan alegría"</p>
+                        <p class="mb-4">Las donas más deliciosas y frescas de la ciudad. Hechas con amor y los mejores ingredientes.</p>
+                        <a href="#products" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-eye"></i> Ver Productos
+                        </a>
+                        <a href="#about" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-info-circle"></i> Conoce Más
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div style="font-size: 15rem; animation: float 3s ease-in-out infinite;">🍩</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="featured" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Nuestras Donas Especiales</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="donut-card text-center">
+                        <div class="donut-image"></div>
+                        <h4>Dona Clásica</h4>
+                        <p>La tradicional dona glaseada que todos amamos</p>
+                        <div class="price">$2.50</div>
+                        <button class="btn btn-primary mt-3" onclick="addToCart('Dona Clásica', 2.50)">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="donut-card text-center">
+                        <div class="donut-image"></div>
+                        <h4>Dona de Chocolate</h4>
+                        <p>Cubierta con delicioso chocolate oscuro</p>
+                        <div class="price">$3.00</div>
+                        <button class="btn btn-primary mt-3" onclick="addToCart('Dona de Chocolate', 3.00)">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="donut-card text-center">
+                        <div class="donut-image"></div>
+                        <h4>Dona Rellena</h4>
+                        <p>Rellena con crema pastelera y mermelada</p>
+                        <div class="price">$3.50</div>
+                        <button class="btn btn-primary mt-3" onclick="addToCart('Dona Rellena', 3.50)">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="section-title text-start">Sobre Nosotros</h2>
+                    <p class="lead">En Milidonas, creemos que cada dona debe ser una experiencia única que llene tu día de alegría. Nuestro eslogan "Donas que te donan alegría" refleja nuestra pasión por crear momentos especiales con cada bocado.</p>
+                    <p>Desde nuestros inicios, hemos estado horneando las donas más frescas y deliciosas usando recetas tradicionales y ingredientes de la más alta calidad, siempre con el objetivo de llevar una sonrisa a tu rostro.</p>
+                    <div class="row mt-4">
+                        <div class="col-sm-6 text-center mb-4">
+                            <i class="fas fa-clock feature-icon"></i>
+                            <h5>Frescas Diariamente</h5>
+                            <p>Horneamos cada mañana para garantizar frescura</p>
+                        </div>
+                        <div class="col-sm-6 text-center mb-4">
+                            <i class="fas fa-heart feature-icon"></i>
+                            <h5>Hechas con Amor</h5>
+                            <p>Cada dona es preparada con cariño y dedicación</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div style="font-size: 10rem; opacity: 0.8;">
+                        <img class="mili-about" src="IMAGEN/mili.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Products -->
+    <section id="products" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Todas Nuestras Donas</h2>
+            <div class="row" id="products-grid">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>🍩 Milidonas</h5>
+                    <p class="fst-italic">"Donas que te donan alegría"</p>
+                    <p>Las mejores donas de la ciudad, hechas con amor y dedicación para llenar tu día de dulzura.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contacto</h5>
+                    <p><i class="fas fa-phone"></i> +593 98 596 1866</p>
+                    <p><i class="fas fa-envelope"></i> milidonas.info@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ibarra, Ecuador</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Síguenos</h5>
+                    <div class="social-links">
+                        <a href="https://fb.com/milidonas.ec" target="_blank" class="text-white me-3" title="Facebook"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="https://instagram.com/milidonas.ec" target="_blank" class="text-white me-3" title="Instagram"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="https://wa.me/593985961866" target="_blank" class="text-white" title="WhatsApp"><i class="fab fa-whatsapp fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4">
+            <div class="text-center">
+                <p>&copy; 2025 Milidonas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h4><i class="fas fa-shopping-cart"></i> Mi Carrito</h4>
+            <button class="btn btn-sm btn-outline-light float-end" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-content" id="cart-content">
+            <div class="text-center p-4">
+                <p>Tu carrito está vacío</p>
+                <i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+        <div class="customer-form" id="customer-form" style="display: none;">
+            <h5 class="mb-4">Información de Entrega</h5>
+            <div class="form-group">
+                <label for="customer-name">Nombre</label>
+                <input type="text" class="form-control" id="customer-name" placeholder="Ingresa tu nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-lastname">Apellido</label>
+                <input type="text" class="form-control" id="customer-lastname" placeholder="Ingresa tu apellido" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-address">Ubicación (Ciudad y dirección exacta)</label>
+                <textarea class="form-control" id="customer-address" rows="3" placeholder="Ej: Ibarra, Av. Atahualpa 1234 y Juan Montalvo, Edificio Los Pinos, departamento 302" required></textarea>
+                <small class="text-muted">Por favor incluye puntos de referencia para una entrega más precisa.</small>
+            </div>
+        </div>
+        <div class="cart-total">
+            <div class="d-flex justify-content-between mb-3">
+                <strong>Total: $<span id="cart-total">0.00</span></strong>
+            </div>
+            <button class="btn btn-success w-100" onclick="checkout()" id="checkout-btn" disabled>
+                <i class="fab fa-whatsapp"></i> Ordenar por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Cart functionality
+        let cart = {};
+        let cartCount = 0;
+        let cartTotal = 0;
+
+        // All products data
+        const allProducts = [
+            {name: "Dona Clásica", price: 2.50, category: "Clásicas"},
+            {name: "Dona de Chocolate", price: 3.00, category: "Chocolate"},
+            {name: "Dona Rellena", price: 3.50, category: "Rellenas"},
+            {name: "Dona Glaseada", price: 2.75, category: "Clásicas"},
+            {name: "Dona de Fresa", price: 3.25, category: "Frutas"},
+            {name: "Dona de Vainilla", price: 2.80, category: "Clásicas"},
+            {name: "Dona Doble Chocolate", price: 3.75, category: "Chocolate"},
+            {name: "Dona de Coco", price: 3.00, category: "Especiales"},
+            {name: "Dona de Limón", price: 3.20, category: "Frutas"},
+            {name: "Dona de Caramelo", price: 3.50, category: "Especiales"},
+            {name: "Dona Red Velvet", price: 4.00, category: "Premium"},
+            {name: "Dona de Café", price: 3.25, category: "Especiales"},
+            {name: "Dona de Café", price: 1.25, category: "Especiales"},
+            {name: "Dona de Café", price: 2.25, category: "Especiales"},
+        ];
+
+        // Initialize products grid
+        function initializeProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            allProducts.forEach(product => {
+                const productHtml = `
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="donut-card text-center">
+                            <div class="donut-image"></div>
+                            <h5>${product.name}</h5>
+                            <p class="text-muted">${product.category}</p>
+                            <div class="price">$${product.price.toFixed(2)}</div>
+                            <button class="btn btn-primary mt-3" onclick="addToCart('${product.name}', ${product.price})">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += productHtml;
+            });
+        }
+
+        function addToCart(name, price) {
+            if (cart[name]) {
+                cart[name].quantity += 1;
+            } else {
+                cart[name] = {
+                    price: price,
+                    quantity: 1
+                };
+            }
+            updateCart();
+        }
+
+        function removeFromCart(name) {
+            if (cart[name]) {
+                if (cart[name].quantity > 1) {
+                    cart[name].quantity -= 1;
+                } else {
+                    delete cart[name];
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            cartCount = 0;
+            cartTotal = 0;
+            
+            for (let item in cart) {
+                cartCount += cart[item].quantity;
+                cartTotal += cart[item].price * cart[item].quantity;
+            }
+            
+            document.getElementById('cart-count').textContent = cartCount;
+            document.getElementById('cart-total').textContent = cartTotal.toFixed(2);
+            
+            updateCartContent();
+        }
+
+        function updateCartContent() {
+            const cartContent = document.getElementById('cart-content');
+            const customerForm = document.getElementById('customer-form');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            if (cartCount === 0) {
+                cartContent.innerHTML = `
+                    <div class="text-center p-4">
+                        <p>Tu carrito está vacío</p>
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                `;
+                customerForm.style.display = 'none';
+                checkoutBtn.disabled = true;
+            } else {
+                let cartHtml = '';
+                for (let item in cart) {
+                    cartHtml += `
+                        <div class="cart-item">
+                            <div>
+                                <h6>${item}</h6>
+                                <small class="text-muted">$${cart[item].price.toFixed(2)} c/u</small>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="removeFromCart('${item}')">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="mx-2">${cart[item].quantity}</span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="addToCart('${item}', ${cart[item].price})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                cartContent.innerHTML = cartHtml;
+                customerForm.style.display = 'block';
+                checkoutBtn.disabled = false;
+            }
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const cartOverlay = document.getElementById('cart-overlay');
+            
+            cartSidebar.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+        }
+
+        function checkout() {
+            if (cartCount === 0) return;
+            
+            // Validar formulario
+            const name = document.getElementById('customer-name').value.trim();
+            const lastname = document.getElementById('customer-lastname').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            
+            if (!name || !lastname || !address) {
+                alert('Por favor completa todos los campos del formulario');
+                return;
+            }
+            
+            let message = `¡Hola! Me gustaría ordenar las siguientes donas:%0A%0A`;
+            message += `*Información del cliente:*%0A`;
+            message += `Nombre: ${name} ${lastname}%0A`;
+            message += `Dirección: ${address}%0A%0A`;
+            message += `*Pedido:*%0A`;
+            
+            for (let item in cart) {
+                message += `• ${item} x${cart[item].quantity} - $${(cart[item].price * cart[item].quantity).toFixed(2)}%0A`;
+            }
+            
+            message += `%0A*Total: $${cartTotal.toFixed(2)}*%0A%0A¡Gracias!`;
+            
+            const whatsappUrl = `https://wa.me/593985961866?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Opcional: limpiar carrito después de enviar
+            cart = {};
+            updateCart();
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-lastname').value = '';
+            document.getElementById('customer-address').value = '';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProducts();
+        });
+    </script>
+</body>
+</html>
