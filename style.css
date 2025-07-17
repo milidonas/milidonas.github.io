@@ -378,7 +378,6 @@ padding-top: 0;
 
 /* Centrar el título "Tu Carrito de Compras" */
 .cart-section .section-title {
-font-family: 'Climate Crisis', cursive;
 text-align: center;
 font-size: 2.2em; /* Un poco más grande para el título principal */
 color: #34495e; /* Color consistente con otros títulos */
@@ -796,7 +795,7 @@ color: #ffffff; /* Color de texto del copyright */
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 80px; /* Ancho de la línea */
+    width: 80px;
     height: 3px;
     background-color: #cf8949;
     border-radius: 2px;
@@ -878,7 +877,6 @@ color: #ffffff; /* Color de texto del copyright */
 }
 
 .contact-info .section-title {
-    font-family: 'Climate Crisis', cursive;
     font-size: 3em;
     color: #6B5B51;
     margin-bottom: 20px;
@@ -1021,6 +1019,61 @@ color: #ffffff; /* Color de texto del copyright */
     color: #6B5B51; /* Color del logo/header */
     margin-bottom: 30px; /* Espacio debajo del título */
 }
+
+/* Estilos para la página 404 */
+.error-404-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* Altura mínima para que ocupe gran parte de la pantalla */
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin: 30px auto;
+    flex-direction: column; /* Apilar elementos verticalmente */
+}
+
+.error-content .error-title {
+    font-family: 'Climate Crisis', cursive;
+    font-size: 8em; /* Gran tamaño para el número 404 */
+    color: #e74c3c; /* Rojo de error */
+    margin-bottom: 10px;
+    line-height: 1; /* Ajustar altura de línea */
+}
+
+.error-content .error-message {
+    font-size: 2em;
+    color: #6B5B51;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.error-content .error-description {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.error-content .home-button {
+    display: inline-block;
+    background-color: #cf8949; /* Color de botón principal */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.error-content .home-button:hover {
+    background-color: #e67e22; /* Tono más oscuro al pasar el ratón */
+}
+
 
 /* Media Queries para Responsividad */
 @media (max-width: 768px) {
@@ -1207,6 +1260,24 @@ margin: 20px auto;
 /* Estilos específicos para el título de "Nuestras Donas" en móvil */
 .products-section .section-title {
     font-size: 2.5em; /* Ajustar tamaño de fuente para móviles */
+}
+
+/* Estilos para la página 404 en móvil */
+.error-404-section .error-title {
+    font-size: 6em; /* Reducir el tamaño del 404 en móvil */
+}
+
+.error-404-section .error-message {
+    font-size: 1.5em; /* Reducir el tamaño del mensaje en móvil */
+}
+
+.error-404-section .error-description {
+    font-size: 1em; /* Reducir el tamaño de la descripción en móvil */
+}
+
+.error-404-section .home-button {
+    padding: 12px 25px; /* Ajustar padding del botón en móvil */
+    font-size: 1em; /* Ajustar tamaño de fuente del botón en móvil */
 }
 }
 
