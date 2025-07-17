@@ -1213,6 +1213,7 @@ margin: 20px auto;
 }
 
 .contact-info .section-title {
+    font-family: 'Climate Crisis', cursive;
     text-align: center;
     font-size: 2.2em; /* Reducir tamaño del título en móvil */
 }
