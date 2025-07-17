@@ -27,10 +27,10 @@ headerPlaceholder.innerHTML = `
 </div>
 <nav class="main-nav">
 <ul>
-<li><a href="index.html">Inicio</a></li>
-<li><a href="products.html">Nuestras Donas</a></li>
-<li><a href="about.html">Sobre Nosotros</a></li>
-<li><a href="contact.html">Contacto</a></li>
+<li><a href="index">Inicio</a></li>
+<li><a href="products">Nuestras Donas</a></li>
+<li><a href="about">Sobre Nosotros</a></li>
+<li><a href="contact">Contacto</a></li>
 </ul>
 </nav>
 <div class="header-right">
@@ -51,10 +51,10 @@ headerPlaceholder.innerHTML = `
 <i class="fas fa-times"></i>
 </button>
 <ul>
-<li><a href="index.html">Inicio</a></li>
-<li><a href="products.html">Nuestras Donas</a></li>
-<li><a href="about.html">Sobre Nosotros</a></li>
-<li><a href="contact.html">Contacto</a></li>
+<li><a href="index">Inicio</a></li>
+<li><a href="products">Nuestras Donas</a></li>
+<li><a href="about">Sobre Nosotros</a></li>
+<li><a href="contact">Contacto</a></li>
 </ul>
 </nav>
 </div>
