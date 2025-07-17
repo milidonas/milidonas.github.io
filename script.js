@@ -86,9 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     {
                         "id": "dona001",
-                        "nombre": "Dona Clásica Glaseada",
-                        "descripcion": "Nuestra dona original, suave y cubierta con un dulce glaseado. ¡Un clásico irresistible!",
-                        "precio": 1.00,
+                        "nombre": "Capricho de Donas Surtidas",
+                        "descripcion": "Caja de 10 Mini Donas Surtidas: Deliciosas donas con chocolate y Oreo, y glaseadas con coloridos confites. ¡Perfectas para tu antojo!",
+                        "precio": 3.00,
                         "imagen": "IMAGEN/md1.png"
                     },
                     {
@@ -96,42 +96,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         "nombre": "Dona de Chocolate con Chispas",
                         "descripcion": "El doble de chocolate en esta dona suave, cubierta y con chispas de chocolate. ¡Para amantes del cacao!",
                         "precio": 1.55,
-                        "imagen": "IMAGEN/md2.png"
+                        "imagen": "IMAGEN/md1.png"
                     },
                     {
                         "id": "dona003",
                         "nombre": "Dona de Fresa con Sprinkles",
                         "descripcion": "Sabor vibrante a fresa con coloridos sprinkles. ¡Perfecta para alegrar tu día!",
                         "precio": 1.60,
-                        "imagen": "IMAGEN/md3.png"
+                        "imagen": "IMAGEN/md1.png"
                     },
                     {
                         "id": "dona004",
                         "nombre": "Dona de Vainilla con Glaseado",
                         "descripcion": "Suave dona de vainilla con un dulce glaseado blanco. Simple y deliciosa.",
                         "precio": 1.40,
-                        "imagen": "IMAGEN/md4.png"
-                    },
-                    {
-                        "id": "dona005",
-                        "nombre": "Dona de Canela y Azúcar",
-                        "descripcion": "Una explosión de sabor a canela y azúcar, perfecta para acompañar tu café.",
-                        "precio": 1.65,
                         "imagen": "IMAGEN/md1.png"
-                    },
-                    {
-                        "id": "dona006",
-                        "nombre": "Dona Rellena de Crema Pastelera",
-                        "descripcion": "Suave dona rellena de una deliciosa crema pastelera casera. ¡Un placer cremoso!",
-                        "precio": 2.00,
-                        "imagen": "IMAGEN/md2.png"
-                    },
-                    {
-                        "id": "dona007",
-                        "nombre": "Dona de Café con Glaseado",
-                        "descripcion": "El toque perfecto de café en esta dona, ideal para los amantes de esta bebida.",
-                        "precio": 1.80,
-                        "imagen": "IMAGEN/md3.png"
                     }
 
                     
