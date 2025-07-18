@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="invoice-customer-details">
-                    <h3>Tus Datos de Contacto</h3>
+                    <h3>Tus Datos de Contacto y Ubicación</h3>
                     <form id="checkout-form">
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
@@ -51,10 +51,32 @@
                             <label for="apellido">Apellido:</label>
                             <input type="text" id="apellido" name="apellido" placeholder="Escriba su apellido" required>
                         </div>
+                        <!-- Nuevos campos de ubicación -->
                         <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <textarea id="direccion" name="direccion" rows="3" placeholder="Ej: Ibarra, Av. Atahualpa 1234 y Juan Montalvo, Edificio Los Pinos, departamento 302" required></textarea>
+                            <label for="country">País:</label>
+                            <input type="text" id="country" name="country" value="Ecuador" readonly class="read-only-input">
                         </div>
+                        <div class="form-group">
+                            <label for="province">Provincia:</label>
+                            <select id="province" name="province" required>
+                                <option value="">Selecciona una provincia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="canton">Cantón:</label>
+                            <select id="canton" name="canton" required disabled>
+                                <option value="">Selecciona un cantón</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="street-address">Dirección (Calle y Número):</label>
+                            <input type="text" id="street-address" name="street-address" placeholder="Ej: Av. Atahualpa 1234 y Juan Montalvo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Referencia (Ej: Edificio Los Pinos, departamento 302, cerca de...):</label>
+                            <textarea id="reference" name="reference" rows="3" placeholder="Añade detalles adicionales para la entrega"></textarea>
+                        </div>
+                        <!-- Fin de nuevos campos de ubicación -->
                         <button type="button" id="checkout-whatsapp" class="whatsapp-button">
                             Pedir por WhatsApp
                         </button>
