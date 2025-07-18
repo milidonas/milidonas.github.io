@@ -10,10 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Contact form elements
     const contactForm = document.querySelector('.contact-form');
-    const contactNameInput = document.getElementById('contact-name'); // Corrected ID
-    const contactApellidoInput = document.getElementById('contact-apellido'); // Corrected ID
+    const contactNameInput = document.getElementById('contact-name');
+    const contactApellidoInput = document.getElementById('contact-apellido');
     const contactMessageTextarea = document.getElementById('contact-message');
     const contactSubmitButton = document.querySelector('.submit-button[data-form-type="contact"]');
+
+    // Nuevos elementos para la ubicación en checkout.html
+    const provinceSelect = document.getElementById('province');
+    const cantonSelect = document.getElementById('canton');
+    const streetAddressInput = document.getElementById('street-address');
+    const referenceTextarea = document.getElementById('reference');
 
     console.log('Script loaded. Contact form element:', contactForm);
     console.log('Contact name input element:', contactNameInput);
@@ -21,9 +27,36 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Contact message textarea element:', contactMessageTextarea);
     console.log('Contact submit button element:', contactSubmitButton);
 
-
     let cart = JSON.parse(localStorage.getItem('donasCart')) || []; // Cargar carrito de localStorage
-    // Se elimina la constante SHIPPING_COST
+
+    // Datos de provincias y cantones de Ecuador (puedes expandir esta lista)
+    const ecuadorLocations = {
+        "Azuay": ["Cuenca", "Gualaceo", "Paute"],
+        "Bolívar": ["Guaranda", "Chillanes", "San Miguel"],
+        "Cañar": ["Azogues", "Cañar", "La Troncal"],
+        "Carchi": ["Tulcán", "Bolívar", "Espejo", "Montúfar", "San Pedro de Huaca", "Mira"],
+        "Chimborazo": ["Riobamba", "Alausí", "Guano"],
+        "Cotopaxi": ["Latacunga", "La Maná", "Pujilí"],
+        "El Oro": ["Machala", "Pasaje", "Santa Rosa"],
+        "Esmeraldas": ["Esmeraldas", "Atacames", "Quinindé"],
+        "Galápagos": ["San Cristóbal", "Isabela", "Santa Cruz"],
+        "Guayas": ["Guayaquil", "Daule", "Milagro", "Samborondón", "Durán"],
+        "Imbabura": ["Ibarra", "Otavalo", "Cotacachi", "Antonio Ante", "Pimampiro", "San Miguel de Urcuquí"],
+        "Loja": ["Loja", "Catamayo", "Saraguro"],
+        "Los Ríos": ["Babahoyo", "Quevedo", "Vinces"],
+        "Manabí": ["Portoviejo", "Manta", "Chone", "Jipijapa", "Montecristi", "Sucre"],
+        "Morona Santiago": ["Macas", "Gualaquiza", "Sucúa"],
+        "Napo": ["Tena", "Archidona", "El Chaco"],
+        "Orellana": ["Coca", "Aguarico", "La Joya de los Sachas"],
+        "Pastaza": ["Puyo", "Mera", "Santa Clara"],
+        "Pichincha": ["Quito", "Cayambe", "Machachi", "Rumiñahui", "Mejía", "Pedro Moncayo", "San Miguel de los Bancos", "Puerto Quito"],
+        "Santa Elena": ["Santa Elena", "La Libertad", "Salinas"],
+        "Santo Domingo de los Tsáchilas": ["Santo Domingo", "La Concordia"],
+        "Sucumbíos": ["Nueva Loja", "Cascales", "Lago Agrio"],
+        "Tungurahua": ["Ambato", "Baños de Agua Santa", "Pelileo"],
+        "Zamora Chinchipe": ["Zamora", "Yacuambi", "Centinela del Cóndor"]
+    };
+
 
     // Función para guardar el carrito en localStorage y actualizar el contador
     function saveCart() {
@@ -34,11 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para actualizar la visualización del contador de productos en el encabezado
     function updateCartCountDisplay() {
         const cartCountSpan = document.getElementById('cart-count');
-        
+
         if (cartCountSpan) {
             const totalItems = cart.reduce((sum, item) => sum + item.cantidad, 0);
             cartCountSpan.textContent = totalItems;
-            
+
             if (totalItems > 0) {
                 cartCountSpan.style.display = 'flex'; // Usar flex para centrar el número
             } else {
@@ -55,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadProducts();
     }
 
-    // Lógica específica para la página del carrito (cart.html)
+    // Lógica específica para la página del carrito (checkout.html)
     if (cartItemsContainer && checkoutWhatsappButton) {
         updateCartDisplay(); // Mostrar el carrito al cargar la página
         checkoutWhatsappButton.addEventListener('click', handleCheckout);
@@ -64,6 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clearCartButton) {
             clearCartButton.addEventListener('click', clearCart);
         }
+
+        // Lógica para poblar provincias y cantones
+        populateProvinces();
+        provinceSelect.addEventListener('change', populateCantons);
     }
 
     // Lógica específica para la página de contacto (contact.html)
@@ -82,39 +119,34 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadProducts() {
         try {
             const products = [
-                
-
-                    {
-                        "id": "dona001",
-                        "nombre": "Capricho de Donas Surtidas",
-                        "descripcion": "Caja de 10 Mini Donas Surtidas: Deliciosas donas con chocolate y Oreo, y glaseadas con coloridos confites. ¡Perfectas para tu antojo!",
-                        "precio": 3.00,
-                        "imagen": "IMAGEN/md1.png"
-                    },
-                    {
-                        "id": "dona002",
-                        "nombre": "Dona de Chocolate con Chispas",
-                        "descripcion": "El doble de chocolate en esta dona suave, cubierta y con chispas de chocolate. ¡Para amantes del cacao!",
-                        "precio": 1.55,
-                        "imagen": "IMAGEN/md1.png"
-                    },
-                    {
-                        "id": "dona003",
-                        "nombre": "Dona de Fresa con Sprinkles",
-                        "descripcion": "Sabor vibrante a fresa con coloridos sprinkles. ¡Perfecta para alegrar tu día!",
-                        "precio": 1.60,
-                        "imagen": "IMAGEN/md1.png"
-                    },
-                    {
-                        "id": "dona004",
-                        "nombre": "Dona de Vainilla con Glaseado",
-                        "descripcion": "Suave dona de vainilla con un dulce glaseado blanco. Simple y deliciosa.",
-                        "precio": 1.40,
-                        "imagen": "IMAGEN/md1.png"
-                    }
-
-                    
-
+                {
+                    "id": "dona001",
+                    "nombre": "Dona Clásica Glaseada",
+                    "descripcion": "Nuestra dona original, suave y cubierta con un dulce glaseado. ¡Un clásico irresistible!",
+                    "precio": 1.00,
+                    "imagen": "IMAGEN/md1.png"
+                },
+                {
+                    "id": "dona002",
+                    "nombre": "Dona de Chocolate con Chispas",
+                    "descripcion": "El doble de chocolate en esta dona suave, cubierta y con chispas de chocolate. ¡Para amantes del cacao!",
+                    "precio": 1.55,
+                    "imagen": "IMAGEN/md2.png"
+                },
+                {
+                    "id": "dona003",
+                    "nombre": "Dona de Fresa con Sprinkles",
+                    "descripcion": "Sabor vibrante a fresa con coloridos sprinkles. ¡Perfecta para alegrar tu día!",
+                    "precio": 1.60,
+                    "imagen": "IMAGEN/md3.png"
+                },
+                {
+                    "id": "dona004",
+                    "nombre": "Dona de Vainilla con Glaseado",
+                    "descripcion": "Suave dona de vainilla con un dulce glaseado blanco. Simple y deliciosa.",
+                    "precio": 1.40,
+                    "imagen": "IMAGEN/md4.png"
+                }
             ];
             displayProducts(products);
         } catch (error) {
@@ -129,14 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayProducts(products) {
         if (!productGrid) return;
 
-        // Eliminar solo los productos existentes para recargar, sin tocar el título estático
-        // Ya no se añade el <h2>Nuestras Donas</h2> aquí, ya que está en products.html
         Array.from(productGrid.children).forEach(child => {
-            // Asegurarse de no eliminar el título estático si el productGrid contiene otros elementos
-            // En este caso, productGrid solo debería contener los productos, no el título
             child.remove();
         });
-        
+
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
@@ -153,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
             button.addEventListener('click', async (event) => {
                 const productId = event.target.dataset.id;
-                addProductToCart(productId, products); 
+                addProductToCart(productId, products);
             });
         });
     }
@@ -173,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para actualizar la visualización del carrito (solo en cart.html)
+    // Función para actualizar la visualización del carrito (solo en checkout.html)
     function updateCartDisplay() {
         if (!cartItemsContainer) return;
 
@@ -196,6 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
+            // Deshabilitar selectores de ubicación si el carrito está vacío
+            if (provinceSelect) provinceSelect.disabled = true;
+            if (cantonSelect) cantonSelect.disabled = true;
+            if (streetAddressInput) streetAddressInput.disabled = true;
+            if (referenceTextarea) referenceTextarea.disabled = true;
+
             return;
         }
 
@@ -228,6 +262,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.disabled = false;
             });
         }
+        // Habilitar selectores de ubicación si hay productos en el carrito
+        if (provinceSelect) provinceSelect.disabled = false;
+        // Canton select will be enabled by populateCantons if a province is selected
+        if (streetAddressInput) streetAddressInput.disabled = false;
+        if (referenceTextarea) referenceTextarea.disabled = false;
+
 
         document.querySelectorAll('.increase-quantity').forEach(button => {
             button.addEventListener('click', (event) => {
@@ -275,7 +315,44 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Carrito vaciado.');
     }
 
-    // Función para manejar el envío del pedido por WhatsApp (en cart.html)
+    // Función para poblar el selector de provincias
+    function populateProvinces() {
+        if (!provinceSelect) return;
+
+        // Limpiar opciones existentes (excepto la primera "Selecciona una provincia")
+        provinceSelect.innerHTML = '<option value="">Selecciona una provincia</option>';
+        cantonSelect.innerHTML = '<option value="">Selecciona un cantón</option>';
+        cantonSelect.disabled = true; // Deshabilitar cantones hasta que se elija una provincia
+
+        for (const province in ecuadorLocations) {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        }
+    }
+
+    // Función para poblar el selector de cantones basado en la provincia seleccionada
+    function populateCantons() {
+        if (!provinceSelect || !cantonSelect) return;
+
+        const selectedProvince = provinceSelect.value;
+        cantonSelect.innerHTML = '<option value="">Selecciona un cantón</option>';
+        cantonSelect.disabled = true; // Deshabilitar por defecto
+
+        if (selectedProvince && ecuadorLocations[selectedProvince]) {
+            ecuadorLocations[selectedProvince].forEach(canton => {
+                const option = document.createElement('option');
+                option.value = canton;
+                option.textContent = canton;
+                cantonSelect.appendChild(option);
+            });
+            cantonSelect.disabled = false; // Habilitar cantones si hay una provincia seleccionada
+        }
+    }
+
+
+    // Función para manejar el envío del pedido por WhatsApp (en checkout.html)
     function handleCheckout() {
         if (cart.length === 0) {
             console.log('Tu carrito está vacío. ¡Añade algunas donas!');
@@ -288,22 +365,28 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const nombre = checkoutForm ? document.getElementById('nombre').value : '';
-        const apellido = checkoutForm ? document.getElementById('apellido').value : '';
-        const direccion = checkoutForm ? document.getElementById('direccion').value : '';
+        const nombre = document.getElementById('nombre').value;
+        const apellido = document.getElementById('apellido').value;
+        const country = document.getElementById('country').value;
+        const province = provinceSelect.value;
+        const canton = cantonSelect.value;
+        const streetAddress = streetAddressInput.value;
+        const reference = referenceTextarea.value; // Este campo no es requerido, puede estar vacío
 
         const phoneNumber = '+593985961866'; // Reemplaza con tu número de WhatsApp de Ecuador
 
         let message = `¡Hola! Me gustaría hacer un pedido de donas:\n\n`;
-        
-        if (nombre && apellido && direccion) {
-            message += `*Datos del Cliente:*\n`;
-            message += `Nombre: ${nombre}\n`;
-            message += `Apellido: ${apellido}\n`;
-            message += `Dirección: ${direccion}\n\n`;
-        } else {
-            message += `*Datos del Cliente: (No proporcionados en el formulario)*\n\n`;
+
+        message += `*Datos del Cliente:*\n`;
+        message += `Nombre: ${nombre}\n`;
+        message += `Apellido: ${apellido}\n`;
+        // Combinar la dirección en una sola línea
+        let fullAddress = `${province}, ${canton}, ${streetAddress}`;
+        if (reference) {
+            fullAddress += `, ${reference}`;
         }
+        message += `Dirección: ${fullAddress}\n\n`;
+
 
         message += `*Detalle del Pedido:*\n`;
         cart.forEach(item => {
@@ -324,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartDisplay();
         if (checkoutForm) {
             checkoutForm.reset();
+            populateProvinces(); // Volver a inicializar los selectores de ubicación
         }
     }
 
