@@ -555,7 +555,8 @@ color: #555;
 
 .form-group input[type="text"],
 .form-group input[type="email"],
-.form-group textarea {
+.form-group textarea,
+.form-group select { /* Añadido select aquí para estilos comunes */
 width: calc(100% - 20px);
 padding: 10px;
 border: 1px solid #ccc;
@@ -565,11 +566,25 @@ box-sizing: border-box;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus { /* Añadido select aquí para estilos de enfoque */
 outline: none;
 border-color: #3498db;
 box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
+
+/* Estilo para el campo de solo lectura */
+.read-only-input {
+    background-color: #f5f5f5; /* Un gris muy claro */
+    border: 1px solid #e0e0e0; /* Borde más suave */
+    cursor: default; /* Cambiar cursor para indicar que no es editable */
+}
+
+.read-only-input:focus {
+    outline: none;
+    box-shadow: none; /* Eliminar sombra al enfocar */
+}
+
 
 .whatsapp-button {
 background-color: #25D366;
