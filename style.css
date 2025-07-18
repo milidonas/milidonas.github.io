@@ -378,6 +378,7 @@ padding-top: 0;
 
 /* Centrar el título "Tu Carrito de Compras" */
 .cart-section .section-title {
+font-family: 'Climate Crisis', cursive;
 text-align: center;
 font-size: 2.2em; /* Un poco más grande para el título principal */
 color: #34495e; /* Color consistente con otros títulos */
@@ -877,6 +878,7 @@ color: #ffffff; /* Color de texto del copyright */
 }
 
 .contact-info .section-title {
+    font-family: 'Climate Crisis', cursive;
     font-size: 3em;
     color: #6B5B51;
     margin-bottom: 20px;
