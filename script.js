@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     "id": "dona001",
                     "nombre": "Capricho de Donas Surtida",
-                    "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
+                    "descripcion": "Mini Donas Capricho de Donas Surtidas 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md1.png"
