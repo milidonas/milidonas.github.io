@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const productGrid = document.getElementById('productos');
     const cartItemsContainer = document.getElementById('cart-items');
@@ -123,13 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": "dona001",
                     "nombre": "Capricho de Donas Surtida",
                     "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
+                    "unidades": "10 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md1.png"
                 },
                 {
                     "id": "dona002",
-                    "nombre": "Un Momento  Choco & Coco",
+                    "nombre": "Un Momento Choco & Coco",
                     "descripcion": "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido y confites crujientes 🌈 Coco: dulce de leche + coco rallado para un toque tropical 🥥✨  Perfectas para compartir, consentirte o alegrar tu día 💖 ¡Choco & Coco, el dúo que endulza tu antojo! 🍩💥",
+                    "unidades": "2 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md2.png"
                 },
@@ -137,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": "dona003",
                     "nombre": "ChocoCrush & CookiePop",
                     "descripcion": "Dos minidonas, dos formas de romper la dieta (con gusto).  ChocoCrush: chocolate fundido + confites crujientes 🌈 CookiePop: dulce de leche con trozos de galleta Oreo 🍪✨  Dulces, esponjosas y adictivas. 🎉 ¡Una combinación explosiva para tus antojos! 💣🍩",
+                    "unidades": "2 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md3.png"
                 }
@@ -161,11 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
+            // Se ajusta el formato de la descripción, unidades y el precio según lo solicitado
             productCard.innerHTML = `
                 <img src="${product.imagen}" alt="${product.nombre}">
                 <h3>${product.nombre}</h3>
-                <p>${product.descripcion}</p>
-                <p class="price">$${product.precio.toFixed(2)}</p>
+                <p><strong>Descripción:</strong> ${product.descripcion}</p>
+                <p><strong>Unidades:</strong> ${product.unidades}</p> <!-- Nuevo campo para unidades -->
+                <p class="price">Precio: $${product.precio.toFixed(2)}</p>
                 <button class="add-to-cart-btn" data-id="${product.id}">Añadir al Carrito</button>
             `;
             productGrid.appendChild(productCard);
@@ -229,14 +235,15 @@ document.addEventListener('DOMContentLoaded', () => {
         cart.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
+            // Se ajusta el formato de la cantidad y el precio en el carrito
             itemElement.innerHTML = `
                 <span>${item.nombre}</span>
                 <div class="item-quantity-controls">
                     <button class="quantity-btn decrease-quantity" data-id="${item.id}">-</button>
-                    <span class="item-quantity">${item.cantidad}</span>
+                    <span class="item-quantity">Cantidad: ${item.cantidad}</span>
                     <button class="quantity-btn increase-quantity" data-id="${item.id}">+</button>
                 </div>
-                <span>$${(item.precio * item.cantidad).toFixed(2)}</span>
+                <span>Precio: $${(item.precio * item.cantidad).toFixed(2)}</span>
             `;
             cartItemsContainer.appendChild(itemElement);
             subtotal += item.precio * item.cantidad;
