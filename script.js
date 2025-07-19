@@ -121,31 +121,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const products = [
                 {
                     "id": "dona001",
-                    "nombre": "Dona Clásica Glaseada",
-                    "descripcion": "Nuestra dona original, suave y cubierta con un dulce glaseado. ¡Un clásico irresistible!",
-                    "precio": 1.00,
+                    "nombre": "Capricho de Donas Surtida",
+                    "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
+                    "precio": 3.00,
                     "imagen": "IMAGEN/md1.png"
                 },
                 {
                     "id": "dona002",
-                    "nombre": "Dona de Chocolate con Chispas",
-                    "descripcion": "El doble de chocolate en esta dona suave, cubierta y con chispas de chocolate. ¡Para amantes del cacao!",
-                    "precio": 1.55,
+                    "nombre": "Un Momento  Choco & Coco",
+                    "descripcion": "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido y confites crujientes 🌈 Coco: dulce de leche + coco rallado para un toque tropical 🥥✨  Perfectas para compartir, consentirte o alegrar tu día 💖 ¡Choco & Coco, el dúo que endulza tu antojo! 🍩💥",
+                    "precio": 3.00,
                     "imagen": "IMAGEN/md2.png"
                 },
                 {
                     "id": "dona003",
-                    "nombre": "Dona de Fresa con Sprinkles",
-                    "descripcion": "Sabor vibrante a fresa con coloridos sprinkles. ¡Perfecta para alegrar tu día!",
-                    "precio": 1.60,
+                    "nombre": "ChocoCrush & CookiePop",
+                    "descripcion": "Dos minidonas, dos formas de romper la dieta (con gusto).  ChocoCrush: chocolate fundido + confites crujientes 🌈 CookiePop: dulce de leche con trozos de galleta Oreo 🍪✨  Dulces, esponjosas y adictivas. 🎉 ¡Una combinación explosiva para tus antojos! 💣🍩",
+                    "precio": 3.00,
                     "imagen": "IMAGEN/md3.png"
-                },
-                {
-                    "id": "dona004",
-                    "nombre": "Dona de Vainilla con Glaseado",
-                    "descripcion": "Suave dona de vainilla con un dulce glaseado blanco. Simple y deliciosa.",
-                    "precio": 1.40,
-                    "imagen": "IMAGEN/md4.png"
                 }
             ];
             displayProducts(products);
