@@ -113,7 +113,7 @@ body {
     height: 26px; /* Aumentado el alto fijo, igual al ancho para un círculo perfecto */
     display: flex; /* Usar flexbox para centrar el número */
     justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    align-items: center;
     font-size: 0.85em; /* Ligeramente más grande para el número */
     font-weight: bold;
     position: absolute;
@@ -362,6 +362,13 @@ main {
     text-align: center; /* Centrar el precio */
 }
 
+/* Contenedor para los botones de la tarjeta de producto */
+.product-actions {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+    margin-top: 15px; /* Espacio superior para separar de la info del producto */
+}
+
 .add-to-cart-btn {
     background-color: #6B5B51; /* Azul vibrante */
     color: white;
@@ -371,12 +378,38 @@ main {
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease;
-    width: 100%; /* Asegura que el botón ocupe todo el ancho disponible */
+    flex: 1; /* Para que ocupe el espacio disponible */
 }
 
 .add-to-cart-btn:hover {
     background-color: #FEF0E7; /* Azul más oscuro */
     color: black;
+}
+
+/* Estilos para el botón de compartir */
+.share-product-btn {
+    background-color: #3498db; /* Azul para el botón de compartir */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    flex: 1; /* Para que ocupe el espacio disponible */
+    display: flex; /* Para centrar el icono y texto */
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Espacio entre icono y texto */
+}
+
+.share-product-btn:hover {
+    background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
+}
+
+.share-product-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 .cart-section {
@@ -806,7 +839,7 @@ main {
     font-size: 3em;
     color: #6B5B51; /* Color del logo/header */
     margin-bottom: 20px;
-    text-align: left; /* Asegura que el título esté alineado a la izquierda */
+    text-align: left;
     position: relative;
     padding-bottom: 10px;
 }
@@ -1035,11 +1068,11 @@ main {
 
 /* Estilos específicos para el título de "Nuestras Donas" */
 .products-section .section-title {
-    font-family: 'Climate Crisis', cursive; /* Aplicar fuente Climate Crisis */
-    text-align: center; /* Centrar el título */
-    font-size: 3em; /* Tamaño de fuente para el título */
-    color: #6B5B51; /* Color del logo/header */
-    margin-bottom: 30px; /* Espacio debajo del título */
+    font-family: 'Climate Crisis', cursive;
+    text-align: center;
+    font-size: 3em;
+    color: #6B5B51;
+    margin-bottom: 30px;
 }
 
 /* Estilos para la página 404 */
@@ -1047,7 +1080,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh; /* Altura mínima para que ocupe gran parte de la pantalla */
+    min-height: 60vh;
     text-align: center;
     padding: 40px 20px;
     background-color: #fff;
@@ -1055,15 +1088,15 @@ main {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     max-width: 800px;
     margin: 30px auto;
-    flex-direction: column; /* Apilar elementos verticalmente */
+    flex-direction: column;
 }
 
 .error-content .error-title {
     font-family: 'Climate Crisis', cursive;
-    font-size: 8em; /* Gran tamaño para el número 404 */
-    color: #e74c3c; /* Rojo de error */
+    font-size: 8em;
+    color: #e74c3c;
     margin-bottom: 10px;
-    line-height: 1; /* Ajustar altura de línea */
+    line-height: 1;
 }
 
 .error-content .error-message {
@@ -1081,7 +1114,7 @@ main {
 
 .error-content .home-button {
     display: inline-block;
-    background-color: #cf8949; /* Color de botón principal */
+    background-color: #cf8949;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -1093,7 +1126,7 @@ main {
 }
 
 .error-content .home-button:hover {
-    background-color: #e67e22; /* Tono más oscuro al pasar el ratón */
+    background-color: #e67e22;
 }
 
 /* Media Queries para Responsividad */
@@ -1140,7 +1173,7 @@ main {
     }
 
     .hero-content {
-        padding-right: 0; /* Eliminar padding derecho */
+        padding-right: 0;
         padding-bottom: 30px; /* Añadir padding inferior */
         text-align: center; /* Centrar texto en móviles */
     }
@@ -1159,6 +1192,12 @@ main {
 
     .product-grid {
         grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+    }
+
+    /* Estilos para los botones de la tarjeta de producto en móvil */
+    .product-card .product-actions {
+        flex-direction: column; /* Apilar los botones en columna */
+        gap: 10px; /* Espacio entre los botones apilados */
     }
 
     .footer-content {
