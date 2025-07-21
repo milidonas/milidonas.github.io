@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             ];
             displayProducts(products);
-            setupOpenGraphMetaTags(products); // Llamar a la función general de meta tags
+            handleProductDeepLink(); // Llamar después de que los productos estén cargados
         } catch (error) {
             console.error('Error al cargar los productos:', error);
             if (productGrid) {
@@ -493,7 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function copyShareLink(productId, buttonElement) {
         const currentPath = window.location.pathname;
         const baseUrl = currentPath.substring(0, currentPath.lastIndexOf('/'));
-        // Usar window.location.origin para obtener la base de la URL (ej. https://milidonas.github.io)
         const shareUrl = `${window.location.origin}${baseUrl}/products.html?id=${productId}`;
 
         try {
@@ -533,128 +532,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función general para configurar las meta tags Open Graph
-    function setupOpenGraphMetaTags(products) {
+    // Función para manejar el deep linking a un producto específico
+    function handleProductDeepLink() {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
-        const ogMetaPlaceholder = document.getElementById('og-meta-placeholder');
-        const currentPathname = window.location.pathname;
 
-        // Eliminar meta tags OG existentes para evitar duplicados
-        const existingOgTags = document.querySelectorAll('meta[property^="og:"]');
-        existingOgTags.forEach(tag => tag.remove());
-
-        let metaTagsToApply = [];
-
-        if (currentPathname.includes('products.html') && productId) {
-            // Lógica para página de producto específica
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                document.title = `${product.nombre} - Milidonas`;
-                metaTagsToApply = [
-                    { property: 'og:title', content: product.nombre },
-                    { property: 'og:description', content: product.descripcion },
-                    { property: 'og:image', content: `${window.location.origin}/${product.imagen}` }, // URL absoluta de la imagen
-                    { property: 'og:url', content: `${window.location.origin}${currentPathname}?id=${product.id}` },
-                    { property: 'og:type', content: 'product' },
-                    { property: 'og:site_name', content: 'Milidonas' }
-                ];
-
-                // Desplazarse al producto después de un pequeño retraso
-                setTimeout(() => {
-                    const productElement = document.getElementById(productId);
-                    if (productElement) {
-                        productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        productElement.style.transition = 'box-shadow 0.5s ease-in-out';
-                        productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)';
-                        setTimeout(() => {
-                            productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
-                        }, 3000);
-                    } else {
-                        console.warn(`Producto con ID "${productId}" no encontrado.`);
-                    }
-                }, 500);
-            } else {
-                console.warn(`Producto con ID "${productId}" no encontrado en los datos.`);
-                // Fallback a meta tags genéricas si el producto no se encuentra
-                metaTagsToApply = [
-                    { property: 'og:title', content: 'Nuestras Donas - Milidonas' },
-                    { property: 'og:description', content: 'Descubre la deliciosa variedad de donas de Milidonas. ¡Donas que te donan alegría!' },
-                    { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` },
-                    { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                    { property: 'og:type', content: 'website' },
-                    { property: 'og:site_name', content: 'Milidonas' }
-                ];
-            }
-        } else if (currentPathname.includes('products.html')) {
-            // Lógica para la página general de productos (sin ID específico)
-            document.title = 'Nuestras Donas - Milidonas';
-            metaTagsToApply = [
-                { property: 'og:title', content: 'Nuestras Donas - Milidonas' },
-                { property: 'og:description', content: 'Descubre la deliciosa variedad de donas de Milidonas. ¡Donas que te donan alegría!' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` }, // Imagen genérica de la tienda
-                { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                { property: 'og:type', content: 'website' },
-                { property: 'og:site_name', content: 'Milidonas' }
-            ];
-        } else if (currentPathname.includes('about.html')) {
-            // Lógica para la página "Sobre Nosotros"
-            document.title = 'Sobre Nosotros - Milidonas';
-            metaTagsToApply = [
-                { property: 'og:title', content: 'Sobre Nosotros - Milidonas' },
-                { property: 'og:description', content: 'Conoce la historia y la pasión detrás de Milidonas. Horneamos donas frescas y deliciosas con amor cada día.' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/mili.png` }, // Imagen de la sección "Sobre Nosotros"
-                { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                { property: 'og:type', content: 'website' },
-                { property: 'og:site_name', content: 'Milidonas' }
-            ];
-        } else if (currentPathname.includes('contact.html')) {
-            // Lógica para la página "Contacto"
-            document.title = 'Contacto - Milidonas';
-            metaTagsToApply = [
-                { property: 'og:title', content: 'Contacto - Milidonas' },
-                { property: 'og:description', content: 'Contáctanos en Milidonas para cualquier pregunta o comentario. ¡Estamos aquí para ayudarte!' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/contact.png` }, // Puedes usar una imagen genérica para contacto
-                { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                { property: 'og:type', content: 'website' },
-                { property: 'og:site_name', content: 'Milidonas' }
-            ];
-        } else if (currentPathname.includes('checkout.html')) {
-            // Lógica para la página "Carrito de Compras"
-            document.title = 'Tu Carrito de Compras - Milidonas';
-            metaTagsToApply = [
-                { property: 'og:title', content: 'Tu Carrito de Compras - Milidonas' },
-                { property: 'og:description', content: 'Revisa tu selección de deliciosas donas y finaliza tu pedido en Milidonas.' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/cart.png` }, // Puedes usar una imagen genérica para el carrito
-                { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                { property: 'og:type', content: 'website' },
-                { property: 'og:site_name', content: 'Milidonas' }
-            ];
-        } else {
-            // Lógica para cualquier otra página o 404
-            // Si no es ninguna de las páginas anteriores, no necesitamos generar OG tags aquí
-            // ya que la página de inicio (index.html) las tendrá estáticas.
-            // Si esta es una página 404 o una página sin OG tags específicas,
-            // las tags por defecto del HTML serán suficientes o se pueden manejar en el HTML de la 404.
-            return; // No hacer nada si no es una página con lógica OG dinámica específica
+        if (productId) {
+            // Esperar un momento para asegurar que los productos se hayan renderizado
+            setTimeout(() => {
+                const productElement = document.getElementById(productId);
+                if (productElement) {
+                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Opcional: resaltar el producto por un momento
+                    productElement.style.transition = 'box-shadow 0.5s ease-in-out';
+                    productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)'; // Azul vibrante
+                    setTimeout(() => {
+                        productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)'; // Volver a la sombra original
+                    }, 3000);
+                } else {
+                    console.warn(`Producto con ID "${productId}" no encontrado.`);
+                }
+            }, 500); // Pequeño retraso para asegurar que el DOM esté listo
         }
-
-        // Aplicar las meta tags
-        if (ogMetaPlaceholder) {
-             metaTagsToApply.forEach(tagData => {
-                const meta = document.createElement('meta');
-                meta.setAttribute('property', tagData.property);
-                meta.setAttribute('content', tagData.content);
-                document.head.appendChild(meta);
-            });
-        }
-    }
-
-    // Llamar a la función de configuración de meta tags al cargar el DOM
-    // Solo se llama si la página actual NO es index.html, ya que index.html tiene sus tags estáticas.
-    const currentPathname = window.location.pathname;
-    if (!currentPathname.includes('index.html') && currentPathname !== '/') {
-        // Solo para products.html, about.html, contact.html, checkout.html
-        setupOpenGraphMetaTags();
     }
 });
