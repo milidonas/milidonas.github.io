@@ -592,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
             metaTagsToApply = [
                 { property: 'og:title', content: 'Milidonas - Donas que te donan alegría' },
                 { property: 'og:description', content: '¡Bienvenido a Milidonas! Descubre nuestras deliciosas donas hechas con amor. "Donas que te donan alegría".' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` }, // Imagen principal de la home
+                { property: 'og:image', content: `${window.location.origin}/SM/LOGO_2.png` }, // IMAGEN DEL LOGOTIPO
                 { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
                 { property: 'og:type', content: 'website' },
                 { property: 'og:site_name', content: 'Milidonas' }
