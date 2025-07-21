@@ -586,13 +586,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     { property: 'og:site_name', content: 'Milidonas' }
                 ];
             }
-        } else if (currentPathname === '/' || currentPathname.includes('index.html')) {
-            // Lógica para la página de inicio
-            document.title = 'Milidonas - Donas que te donan alegría';
+        } else if (currentPathname.includes('products.html')) {
+            // Lógica para la página general de productos (sin ID específico)
+            document.title = 'Nuestras Donas - Milidonas';
             metaTagsToApply = [
-                { property: 'og:title', content: 'Milidonas - Donas que te donan alegría' },
-                { property: 'og:description', content: '¡Bienvenido a Milidonas! Descubre nuestras deliciosas donas hechas con amor. "Donas que te donan alegría".' },
-                { property: 'og:image', content: `${window.location.origin}/SM/LOGO_2.png` }, // IMAGEN DEL LOGOTIPO
+                { property: 'og:title', content: 'Nuestras Donas - Milidonas' },
+                { property: 'og:description', content: 'Descubre la deliciosa variedad de donas de Milidonas. ¡Donas que te donan alegría!' },
+                { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` }, // Imagen genérica de la tienda
                 { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
                 { property: 'og:type', content: 'website' },
                 { property: 'og:site_name', content: 'Milidonas' }
@@ -632,15 +632,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
         } else {
             // Lógica para cualquier otra página o 404
-            document.title = 'Milidonas - Donas que te donan alegría'; // Título por defecto
-            metaTagsToApply = [
-                { property: 'og:title', content: 'Milidonas - Donas que te donan alegría' },
-                { property: 'og:description', content: 'Descubre la deliciosa variedad de donas de Milidonas. ¡Donas que te donan alegría!' },
-                { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` },
-                { property: 'og:url', content: `${window.location.origin}${currentPathname}` },
-                { property: 'og:type', content: 'website' },
-                { property: 'og:site_name', content: 'Milidonas' }
-            ];
+            // Si no es ninguna de las páginas anteriores, no necesitamos generar OG tags aquí
+            // ya que la página de inicio (index.html) las tendrá estáticas.
+            // Si esta es una página 404 o una página sin OG tags específicas,
+            // las tags por defecto del HTML serán suficientes o se pueden manejar en el HTML de la 404.
+            return; // No hacer nada si no es una página con lógica OG dinámica específica
         }
 
         // Aplicar las meta tags
@@ -655,9 +651,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Llamar a la función de configuración de meta tags al cargar el DOM
-    // Si productGrid existe, significa que estamos en products.html y products ya se cargan.
-    // Si no, podemos llamar directamente para la página de inicio u otras.
-    if (!productGrid) { // Solo si no estamos en products.html (donde loadProducts ya lo llama)
-        setupOpenGraphMetaTags(); // Llamar sin productos si no es la página de productos
+    // Solo se llama si la página actual NO es index.html, ya que index.html tiene sus tags estáticas.
+    const currentPathname = window.location.pathname;
+    if (!currentPathname.includes('index.html') && currentPathname !== '/') {
+        // Solo para products.html, about.html, contact.html, checkout.html
+        setupOpenGraphMetaTags();
     }
 });
