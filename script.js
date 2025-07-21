@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             ];
             displayProducts(products);
-            handleProductDeepLink(); // Llamar después de que los productos estén cargados
+            handleProductDeepLink(products); // Pasar los productos para poder generar las meta tags
         } catch (error) {
             console.error('Error al cargar los productos:', error);
             if (productGrid) {
@@ -493,6 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function copyShareLink(productId, buttonElement) {
         const currentPath = window.location.pathname;
         const baseUrl = currentPath.substring(0, currentPath.lastIndexOf('/'));
+        // Usar window.location.origin para obtener la base de la URL (ej. https://milidonas.github.io)
         const shareUrl = `${window.location.origin}${baseUrl}/products.html?id=${productId}`;
 
         try {
@@ -532,27 +533,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para manejar el deep linking a un producto específico
-    function handleProductDeepLink() {
+    // Función para manejar el deep linking a un producto específico y generar meta tags
+    function handleProductDeepLink(products) {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
+        const ogMetaPlaceholder = document.getElementById('og-meta-placeholder');
 
-        if (productId) {
-            // Esperar un momento para asegurar que los productos se hayan renderizado
-            setTimeout(() => {
-                const productElement = document.getElementById(productId);
-                if (productElement) {
-                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Opcional: resaltar el producto por un momento
-                    productElement.style.transition = 'box-shadow 0.5s ease-in-out';
-                    productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)'; // Azul vibrante
-                    setTimeout(() => {
-                        productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)'; // Volver a la sombra original
-                    }, 3000);
-                } else {
-                    console.warn(`Producto con ID "${productId}" no encontrado.`);
-                }
-            }, 500); // Pequeño retraso para asegurar que el DOM esté listo
+        if (productId && products && ogMetaPlaceholder) {
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                // Actualizar el título de la página
+                document.title = `${product.nombre} - Milidonas`;
+
+                // Eliminar meta tags OG existentes para evitar duplicados
+                const existingOgTags = document.querySelectorAll('meta[property^="og:"]');
+                existingOgTags.forEach(tag => tag.remove());
+
+                // Generar y añadir las meta tags Open Graph
+                const metaTags = [
+                    { property: 'og:title', content: product.nombre },
+                    { property: 'og:description', content: product.descripcion },
+                    { property: 'og:image', content: `${window.location.origin}/IMAGEN/${product.imagen.split('/').pop()}` }, // Asegurarse de que sea una URL absoluta
+                    { property: 'og:url', content: `${window.location.origin}${window.location.pathname}?id=${product.id}` },
+                    { property: 'og:type', content: 'product' },
+                    { property: 'og:site_name', content: 'Milidonas' }
+                ];
+
+                metaTags.forEach(tagData => {
+                    const meta = document.createElement('meta');
+                    meta.setAttribute('property', tagData.property);
+                    meta.setAttribute('content', tagData.content);
+                    document.head.appendChild(meta);
+                });
+
+                // Desplazarse al producto después de un pequeño retraso
+                setTimeout(() => {
+                    const productElement = document.getElementById(productId);
+                    if (productElement) {
+                        productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Opcional: resaltar el producto por un momento
+                        productElement.style.transition = 'box-shadow 0.5s ease-in-out';
+                        productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)'; // Azul vibrante
+                        setTimeout(() => {
+                            productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)'; // Volver a la sombra original
+                        }, 3000);
+                    } else {
+                        console.warn(`Producto con ID "${productId}" no encontrado.`);
+                    }
+                }, 500); // Pequeño retraso para asegurar que el DOM esté listo
+            } else {
+                console.warn(`Producto con ID "${productId}" no encontrado en los datos.`);
+            }
+        } else if (ogMetaPlaceholder) {
+            // Si no hay ID de producto en la URL, establecer meta tags genéricas para la página de productos
+            const metaTags = [
+                { property: 'og:title', content: 'Nuestras Donas - Milidonas' },
+                { property: 'og:description', content: 'Descubre la deliciosa variedad de donas de Milidonas. ¡Donas que te donan alegría!' },
+                { property: 'og:image', content: `${window.location.origin}/IMAGEN/donas.png` }, // Imagen genérica de la tienda
+                { property: 'og:url', content: `${window.location.origin}${window.location.pathname}` },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:site_name', content: 'Milidonas' }
+            ];
+
+            metaTags.forEach(tagData => {
+                const meta = document.createElement('meta');
+                meta.setAttribute('property', tagData.property);
+                meta.setAttribute('content', tagData.content);
+                document.head.appendChild(meta);
+            });
         }
     }
 });
