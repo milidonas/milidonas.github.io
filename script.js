@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     "id": "dona001",
                     "nombre": "Capricho de Donas Surtida",
-                    "descripcion": "Mini Donas Capricho de Donas Surtidas 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
+                    "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md1.png"
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": "dona002",
                     "nombre": "Un Momento Choco & Coco",
                     "descripcion": "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido y confites crujientes 🌈 Coco: dulce de leche + coco rallado para un toque tropical 🥥✨  Perfectas para compartir, consentirte o alegrar tu día 💖 ¡Choco & Coco, el dúo que endulza tu antojo! 🍩💥",
-                    "unidades": "10 mini donas", // Nuevo campo para las unidades
+                    "unidades": "2 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md2.png"
                 },
@@ -140,12 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": "dona003",
                     "nombre": "ChocoCrush & CookiePop",
                     "descripcion": "Dos minidonas, dos formas de romper la dieta (con gusto).  ChocoCrush: chocolate fundido + confites crujientes 🌈 CookiePop: dulce de leche con trozos de galleta Oreo 🍪✨  Dulces, esponjosas y adictivas. 🎉 ¡Una combinación explosiva para tus antojos! 💣🍩",
-                    "unidades": "10 mini donas", // Nuevo campo para las unidades
+                    "unidades": "2 mini donas", // Nuevo campo para las unidades
                     "precio": 3.00,
                     "imagen": "IMAGEN/md3.png"
                 }
             ];
             displayProducts(products);
+            handleProductDeepLink(); // Llamar después de que los productos estén cargados
         } catch (error) {
             console.error('Error al cargar los productos:', error);
             if (productGrid) {
@@ -165,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
+            productCard.id = product.id; // Asignar ID al product-card para el deep link
             // Se ajusta el formato de la descripción, unidades y el precio según lo solicitado
             productCard.innerHTML = `
                 <img src="${product.imagen}" alt="${product.nombre}">
@@ -172,7 +174,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>Descripción:</strong> ${product.descripcion}</p>
                 <p><strong>Unidades:</strong> ${product.unidades}</p> <!-- Nuevo campo para unidades -->
                 <p class="price">Precio: $${product.precio.toFixed(2)}</p>
-                <button class="add-to-cart-btn" data-id="${product.id}">Añadir al Carrito</button>
+                <div class="product-actions">
+                    <button class="add-to-cart-btn" data-id="${product.id}">Añadir al Carrito</button>
+                    <button class="share-product-btn" data-id="${product.id}">
+                        <i class="fas fa-share-alt"></i> Compartir
+                    </button>
+                </div>
             `;
             productGrid.appendChild(productCard);
         });
@@ -181,6 +188,14 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', async (event) => {
                 const productId = event.target.dataset.id;
                 addProductToCart(productId, products);
+            });
+        });
+
+        // Añadir event listeners para los botones de compartir
+        document.querySelectorAll('.share-product-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productId = event.currentTarget.dataset.id;
+                copyShareLink(productId, event.currentTarget); // Pasar el botón para feedback visual
             });
         });
     }
@@ -470,5 +485,74 @@ document.addEventListener('DOMContentLoaded', () => {
         contactForm.reset();
         console.log('Formulario de contacto limpiado.'); // Mensaje de depuración
         console.log('Mensaje de contacto enviado por WhatsApp.'); // Mensaje de depuración
+    }
+
+    // --- Nuevas funciones para compartir productos ---
+
+    // Función para copiar el enlace del producto al portapapeles
+    async function copyShareLink(productId, buttonElement) {
+        const currentPath = window.location.pathname;
+        const baseUrl = currentPath.substring(0, currentPath.lastIndexOf('/'));
+        const shareUrl = `${window.location.origin}${baseUrl}/products.html?id=${productId}`;
+
+        try {
+            // Usar document.execCommand('copy') como fallback para entornos que no soportan navigator.clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(shareUrl);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = shareUrl;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+
+            // Feedback visual al usuario
+            const originalText = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+            buttonElement.disabled = true; // Deshabilitar temporalmente
+
+            setTimeout(() => {
+                buttonElement.innerHTML = originalText;
+                buttonElement.disabled = false; // Habilitar de nuevo
+            }, 2000); // Volver al texto original después de 2 segundos
+
+            console.log('Enlace copiado:', shareUrl);
+        } catch (err) {
+            console.error('Error al copiar el enlace:', err);
+            // Puedes mostrar un mensaje de error al usuario si la copia falla
+            const originalText = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-times"></i> Error!';
+            buttonElement.disabled = true;
+            setTimeout(() => {
+                buttonElement.innerHTML = originalText;
+                buttonElement.disabled = false;
+            }, 2000);
+        }
+    }
+
+    // Función para manejar el deep linking a un producto específico
+    function handleProductDeepLink() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        if (productId) {
+            // Esperar un momento para asegurar que los productos se hayan renderizado
+            setTimeout(() => {
+                const productElement = document.getElementById(productId);
+                if (productElement) {
+                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Opcional: resaltar el producto por un momento
+                    productElement.style.transition = 'box-shadow 0.5s ease-in-out';
+                    productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)'; // Azul vibrante
+                    setTimeout(() => {
+                        productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)'; // Volver a la sombra original
+                    }, 3000);
+                } else {
+                    console.warn(`Producto con ID "${productId}" no encontrado.`);
+                }
+            }, 500); // Pequeño retraso para asegurar que el DOM esté listo
+        }
     }
 });
