@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios - milidonas</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/png" href="SM/LOGO_2.png">
+</head>
+<body>
+    <!-- El encabezado se cargará aquí dinámicamente desde header.js -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <section class="comments-section">
+            <h2 class="section-title">Déjanos tu Comentario</h2>
+
+            <div class="comment-form-container">
+                <h3>Escribe tu Opinión</h3>
+                <form id="comment-form" class="comment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="comment-name">Nombre:</label>
+                            <input type="text" id="comment-name" name="name" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment-apellido">Apellido:</label>
+                            <input type="text" id="comment-apellido" name="apellido" placeholder="Tu apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="social-link">Enlace de Red Social (opcional):</label>
+                        <input type="url" id="social-link" name="socialLink" placeholder="Ej: https://instagram.com/tuperfil">
+                        <small>Comparte tu perfil de Facebook o Instagram.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment-text">Tu Comentario:</label>
+                        <textarea id="comment-text" name="commentText" rows="6" placeholder="Escribe aquí tu comentario o sugerencia..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Publicar Comentario</button>
+                </form>
+            </div>
+
+            <div class="comments-display-section">
+                <h3>Lo que dicen nuestros clientes:</h3>
+                <div id="comments-list" class="comments-list">
+                    <p class="loading-message">Cargando comentarios...</p>
+                    <!-- Los comentarios se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- El pie de página se cargará aquí dinámicamente desde footer.js -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Cargar los scripts de forma modular -->
+    <script type="module" src="header.js"></script>
+    <script type="module" src="footer.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
