@@ -1,13 +1,69 @@
-// script.js
+// Importar módulos de Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', () => {
-    const productGrid = document.getElementById('productos');
+    // Variables globales de Firebase (proporcionadas por el entorno Canvas)
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    let app;
+    let db;
+    let auth;
+    let userId = null; // Para almacenar el ID del usuario autenticado o anónimo
+    let isAuthReady = false; // Bandera para saber si la autenticación está lista
+
+    // Inicializar Firebase y autenticar
+    try {
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                console.log("Firebase Auth listo. Usuario ID:", userId);
+            } else {
+                // Si no hay usuario, intentar iniciar sesión anónimamente
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    userId = auth.currentUser.uid;
+                    console.log("Sesión de usuario anónimo iniciada. Usuario ID:", userId);
+                } catch (error) {
+                    console.error("Error al iniciar sesión en Firebase:", error);
+                }
+            }
+            isAuthReady = true;
+            // Una vez que la autenticación está lista, podemos cargar los comentarios
+            if (document.getElementById('comments-list')) {
+                loadComments();
+            }
+        });
+    } catch (error) {
+        console.error("Error al inicializar Firebase:", error);
+        // Mostrar un mensaje al usuario si Firebase no se inicializa
+        const commentsList = document.getElementById('comments-list');
+        if (commentsList) {
+            commentsList.innerHTML = '<p class="error-message">Error al cargar el sistema de comentarios. Por favor, inténtalo de nuevo más tarde.</p>';
+        }
+    }
+
+
+    // Elementos del DOM existentes
+    const productGrid = document.getElementById('product-grid');
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalAmount = document.getElementById('cart-total-amount');
-    const cartSubtotalAmount = document.getElementById('cart-subtotal-amount'); // Subtotal
-    const shippingCostSpan = document.getElementById('shipping-cost'); // Costo de envío (ahora será un mensaje)
+    const cartSubtotalAmount = document.getElementById('cart-subtotal-amount');
+    const shippingCostSpan = document.getElementById('shipping-cost');
     const checkoutWhatsappButton = document.getElementById('checkout-whatsapp');
     const checkoutForm = document.getElementById('checkout-form');
-    const clearCartButton = document.getElementById('clear-cart-btn'); // Botón de vaciar carrito
+    const clearCartButton = document.getElementById('clear-cart-btn');
 
     // Contact form elements
     const contactForm = document.querySelector('.contact-form');
@@ -22,15 +78,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const streetAddressInput = document.getElementById('street-address');
     const referenceTextarea = document.getElementById('reference');
 
+    // Nuevos elementos para la página de comentarios
+    const commentForm = document.getElementById('comment-form');
+    const commentsList = document.getElementById('comments-list');
+    const commentNameInput = document.getElementById('comment-name');
+    const commentApellidoInput = document.getElementById('comment-apellido');
+    const socialLinkInput = document.getElementById('social-link');
+    const commentTextarea = document.getElementById('comment-text');
+
+
     console.log('Script loaded. Contact form element:', contactForm);
     console.log('Contact name input element:', contactNameInput);
     console.log('Contact apellido input element:', contactApellidoInput);
     console.log('Contact message textarea element:', contactMessageTextarea);
     console.log('Contact submit button element:', contactSubmitButton);
 
-    let cart = JSON.parse(localStorage.getItem('donasCart')) || []; // Cargar carrito de localStorage
+    let cart = JSON.parse(localStorage.getItem('donasCart')) || [];
 
-    // Datos de provincias y cantones de Ecuador (puedes expandir esta lista)
     const ecuadorLocations = {
         "Azuay": ["Cuenca", "Gualaceo", "Paute"],
         "Bolívar": ["Guaranda", "Chillanes", "San Miguel"],
@@ -62,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para guardar el carrito en localStorage y actualizar el contador
     function saveCart() {
         localStorage.setItem('donasCart', JSON.stringify(cart));
-        updateCartCountDisplay(); // Actualizar el contador cada vez que el carrito cambia
+        updateCartCountDisplay();
     }
 
     // Función para actualizar la visualización del contador de productos en el encabezado
@@ -74,9 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cartCountSpan.textContent = totalItems;
 
             if (totalItems > 0) {
-                cartCountSpan.style.display = 'flex'; // Usar flex para centrar el número
+                cartCountSpan.style.display = 'flex';
             } else {
-                cartCountSpan.style.display = 'none'; // Ocultar si no hay productos
+                cartCountSpan.style.display = 'none';
             }
         } else {
             console.log('Error: cart-count span not found in the DOM. Retrying in 100ms...');
@@ -91,15 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lógica específica para la página del carrito (checkout.html)
     if (cartItemsContainer && checkoutWhatsappButton) {
-        updateCartDisplay(); // Mostrar el carrito al cargar la página
+        updateCartDisplay();
         checkoutWhatsappButton.addEventListener('click', handleCheckout);
 
-        // Añadir event listener para el botón de vaciar carrito
         if (clearCartButton) {
             clearCartButton.addEventListener('click', clearCart);
         }
 
-        // Lógica para poblar provincias y cantones
         populateProvinces();
         provinceSelect.addEventListener('change', populateCantons);
     }
@@ -112,41 +174,49 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Contact form or submit button not found, cannot attach submit event listener.');
     }
 
+    // Lógica específica para la página de comentarios (comments.html)
+    if (commentForm && commentsList) {
+        commentForm.addEventListener('submit', handleCommentSubmit);
+        // Los comentarios se cargarán después de que Firebase Auth esté listo
+    }
+
     // Inicializar el contador del carrito al cargar cualquier página
     setTimeout(updateCartCountDisplay, 0);
 
-
-    // Función para cargar los productos desde productos.json
+    // Función para cargar los productos (datos de ejemplo)
     async function loadProducts() {
         try {
             const products = [
                 {
                     "id": "dona001",
-                    "nombre": "Capricho de Donas Surtida",
-                    "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
-                    "unidades": "10 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "nombre": "Dona Clásica Glaseada",
+                    "descripcion": "Nuestra dona original, suave y cubierta con un dulce glaseado. ¡Un clásico irresistible!",
+                    "precio": 1.00,
                     "imagen": "IMAGEN/md1.png"
                 },
                 {
                     "id": "dona002",
-                    "nombre": "Un Momento Choco & Coco",
-                    "descripcion": "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido y confites crujientes 🌈 Coco: dulce de leche + coco rallado para un toque tropical 🥥✨  Perfectas para compartir, consentirte o alegrar tu día 💖 ¡Choco & Coco, el dúo que endulza tu antojo! 🍩💥",
-                    "unidades": "2 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "nombre": "Dona de Chocolate con Chispas",
+                    "descripcion": "El doble de chocolate en esta dona suave, cubierta y con chispas de chocolate. ¡Para amantes del cacao!",
+                    "precio": 1.55,
                     "imagen": "IMAGEN/md2.png"
                 },
                 {
                     "id": "dona003",
-                    "nombre": "ChocoCrush & CookiePop",
-                    "descripcion": "Dos minidonas, dos formas de romper la dieta (con gusto).  ChocoCrush: chocolate fundido + confites crujientes 🌈 CookiePop: dulce de leche con trozos de galleta Oreo 🍪✨  Dulces, esponjosas y adictivas. 🎉 ¡Una combinación explosiva para tus antojos! 💣🍩",
-                    "unidades": "2 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "nombre": "Dona de Fresa con Sprinkles",
+                    "descripcion": "Sabor vibrante a fresa con coloridos sprinkles. ¡Perfecta para alegrar tu día!",
+                    "precio": 1.60,
                     "imagen": "IMAGEN/md3.png"
+                },
+                {
+                    "id": "dona004",
+                    "nombre": "Dona de Vainilla con Glaseado",
+                    "descripcion": "Suave dona de vainilla con un dulce glaseado blanco. Simple y deliciosa.",
+                    "precio": 1.40,
+                    "imagen": "IMAGEN/md4.png"
                 }
             ];
             displayProducts(products);
-            handleProductDeepLink(); // Llamar después de que los productos estén cargados
         } catch (error) {
             console.error('Error al cargar los productos:', error);
             if (productGrid) {
@@ -159,24 +229,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayProducts(products) {
         if (!productGrid) return;
 
-        Array.from(productGrid.children).forEach(child => {
-            child.remove();
-        });
+        productGrid.innerHTML = '';
 
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
-            productCard.id = product.id; // Asignar ID al product-card para el deep link
-            // Se ajusta el formato de la descripción, unidades y el precio según lo solicitado
             productCard.innerHTML = `
                 <img src="${product.imagen}" alt="${product.nombre}">
                 <h3>${product.nombre}</h3>
-                <p><strong>Descripción:</strong> ${product.descripcion}</p>
-                <p><strong>Unidades:</strong> ${product.unidades}</p> <!-- Nuevo campo para unidades -->
-                <p class="price">Precio: $${product.precio.toFixed(2)}</p>
+                <p>${product.descripcion}</p>
+                <p class="price">$${product.precio.toFixed(2)}</p>
+                <div class="quantity-selector">
+                    <label for="quantity-${product.id}">Cantidad:</label>
+                    <input type="number" id="quantity-${product.id}" class="product-quantity-input" value="1" min="1">
+                </div>
                 <div class="product-actions">
                     <button class="add-to-cart-btn" data-id="${product.id}">Añadir al Carrito</button>
-                    <button class="share-product-btn" data-id="${product.id}">
+                    <button class="share-product-btn" data-id="${product.id}" data-name="${product.nombre}" data-description="${product.descripcion}">
                         <i class="fas fa-share-alt"></i> Compartir
                     </button>
                 </div>
@@ -185,35 +254,96 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', async (event) => {
+            button.addEventListener('click', (event) => {
                 const productId = event.target.dataset.id;
-                addProductToCart(productId, products);
+                const quantityInput = document.getElementById(`quantity-${productId}`);
+                const quantity = parseInt(quantityInput.value, 10);
+                addProductToCart(productId, products, quantity);
             });
         });
 
-        // Añadir event listeners para los botones de compartir
         document.querySelectorAll('.share-product-btn').forEach(button => {
             button.addEventListener('click', (event) => {
-                const productId = event.currentTarget.dataset.id;
-                copyShareLink(productId, event.currentTarget); // Pasar el botón para feedback visual
+                const productId = event.target.dataset.id || event.target.closest('button').dataset.id;
+                const productName = event.target.dataset.name || event.target.closest('button').dataset.name;
+                const productDescription = event.target.dataset.description || event.target.closest('button').dataset.description;
+                shareProduct(productId, productName, productDescription);
             });
         });
     }
 
     // Función para añadir un producto al carrito
-    function addProductToCart(productId, allProducts) {
+    function addProductToCart(productId, allProducts, quantity = 1) {
         const productToAdd = allProducts.find(p => p.id === productId);
         if (productToAdd) {
             const existingItem = cart.find(item => item.id === productId);
             if (existingItem) {
-                existingItem.cantidad++;
+                existingItem.cantidad += quantity;
             } else {
-                cart.push({ ...productToAdd, cantidad: 1 });
+                cart.push({ ...productToAdd, cantidad: quantity });
             }
             saveCart();
             console.log('Producto añadido al carrito:', cart);
         }
     }
+
+    // Función para compartir un producto
+    async function shareProduct(productId, productName, productDescription) {
+        const productUrl = `${window.location.origin}/products.html?id=${productId}`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `¡Mira esta dona de Milidonas: ${productName}!`,
+                    text: productDescription,
+                    url: productUrl,
+                });
+                console.log('Contenido compartido exitosamente.');
+            } catch (error) {
+                console.error('Error al compartir:', error);
+            }
+        } else {
+            try {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = `¡Mira esta dona de Milidonas: ${productName}!\n${productDescription}\n${productUrl}`;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                // Usar un modal personalizado en lugar de alert
+                showCustomAlert('Enlace del producto copiado al portapapeles. ¡Pégalo donde quieras!');
+                console.log('Enlace copiado al portapapeles:', productUrl);
+            } catch (err) {
+                console.error('Error al copiar al portapapeles:', err);
+                showCustomAlert('No se pudo copiar el enlace. Por favor, cópialo manualmente: ' + productUrl);
+            }
+        }
+    }
+
+    // Función para mostrar un modal de alerta personalizado (reemplazo de alert)
+    function showCustomAlert(message) {
+        const alertModal = document.createElement('div');
+        alertModal.classList.add('custom-alert-modal');
+        alertModal.innerHTML = `
+            <div class="custom-alert-content">
+                <p>${message}</p>
+                <button class="custom-alert-close-btn">OK</button>
+            </div>
+        `;
+        document.body.appendChild(alertModal);
+
+        alertModal.querySelector('.custom-alert-close-btn').addEventListener('click', () => {
+            document.body.removeChild(alertModal);
+        });
+
+        // Cerrar al hacer clic fuera del modal
+        alertModal.addEventListener('click', (e) => {
+            if (e.target === alertModal) {
+                document.body.removeChild(alertModal);
+            }
+        });
+    }
+
 
     // Función para actualizar la visualización del carrito (solo en checkout.html)
     function updateCartDisplay() {
@@ -238,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
-            // Deshabilitar selectores de ubicación si el carrito está vacío
             if (provinceSelect) provinceSelect.disabled = true;
             if (cantonSelect) cantonSelect.disabled = true;
             if (streetAddressInput) streetAddressInput.disabled = true;
@@ -250,15 +379,14 @@ document.addEventListener('DOMContentLoaded', () => {
         cart.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('cart-item');
-            // Se ajusta el formato de la cantidad y el precio en el carrito
             itemElement.innerHTML = `
                 <span>${item.nombre}</span>
                 <div class="item-quantity-controls">
                     <button class="quantity-btn decrease-quantity" data-id="${item.id}">-</button>
-                    <span class="item-quantity">Cantidad: ${item.cantidad}</span>
+                    <span class="item-quantity">${item.cantidad}</span>
                     <button class="quantity-btn increase-quantity" data-id="${item.id}">+</button>
                 </div>
-                <span>Precio: $${(item.precio * item.cantidad).toFixed(2)}</span>
+                <span>$${(item.precio * item.cantidad).toFixed(2)}</span>
             `;
             cartItemsContainer.appendChild(itemElement);
             subtotal += item.precio * item.cantidad;
@@ -277,9 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.disabled = false;
             });
         }
-        // Habilitar selectores de ubicación si hay productos en el carrito
         if (provinceSelect) provinceSelect.disabled = false;
-        // Canton select will be enabled by populateCantons if a province is selected
         if (streetAddressInput) streetAddressInput.disabled = false;
         if (referenceTextarea) referenceTextarea.disabled = false;
 
@@ -312,16 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para eliminar un producto del carrito (mantenerla por si acaso, aunque ya no se usa con los botones +/-)
-    function removeProductFromCart(productId) {
-        const itemIndex = cart.findIndex(item => item.id === productId);
-        if (itemIndex > -1) {
-            cart.splice(itemIndex, 1);
-            saveCart();
-            updateCartDisplay();
-        }
-    }
-
     // Función para vaciar todo el carrito
     function clearCart() {
         cart = [];
@@ -334,10 +450,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateProvinces() {
         if (!provinceSelect) return;
 
-        // Limpiar opciones existentes (excepto la primera "Selecciona una provincia")
         provinceSelect.innerHTML = '<option value="">Selecciona una provincia</option>';
         cantonSelect.innerHTML = '<option value="">Selecciona un cantón</option>';
-        cantonSelect.disabled = true; // Deshabilitar cantones hasta que se elija una provincia
+        cantonSelect.disabled = true;
 
         for (const province in ecuadorLocations) {
             const option = document.createElement('option');
@@ -353,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedProvince = provinceSelect.value;
         cantonSelect.innerHTML = '<option value="">Selecciona un cantón</option>';
-        cantonSelect.disabled = true; // Deshabilitar por defecto
+        cantonSelect.disabled = true;
 
         if (selectedProvince && ecuadorLocations[selectedProvince]) {
             ecuadorLocations[selectedProvince].forEach(canton => {
@@ -362,15 +477,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = canton;
                 cantonSelect.appendChild(option);
             });
-            cantonSelect.disabled = false; // Habilitar cantones si hay una provincia seleccionada
+            cantonSelect.disabled = false;
         }
     }
-
 
     // Función para manejar el envío del pedido por WhatsApp (en checkout.html)
     function handleCheckout() {
         if (cart.length === 0) {
-            console.log('Tu carrito está vacío. ¡Añade algunas donas!');
+            showCustomAlert('Tu carrito está vacío. ¡Añade algunas donas para hacer un pedido!');
             return;
         }
 
@@ -386,16 +500,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const province = provinceSelect.value;
         const canton = cantonSelect.value;
         const streetAddress = streetAddressInput.value;
-        const reference = referenceTextarea.value; // Este campo no es requerido, puede estar vacío
+        const reference = referenceTextarea.value;
 
-        const phoneNumber = '+593985961866'; // Reemplaza con tu número de WhatsApp de Ecuador
+        const phoneNumber = '+593985961866';
 
         let message = `¡Hola! Me gustaría hacer un pedido de donas:\n\n`;
 
         message += `*Datos del Cliente:*\n`;
         message += `Nombre: ${nombre}\n`;
         message += `Apellido: ${apellido}\n`;
-        // Combinar la dirección en una sola línea
         let fullAddress = `${province}, ${canton}, ${streetAddress}`;
         if (reference) {
             fullAddress += `, ${reference}`;
@@ -422,137 +535,155 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartDisplay();
         if (checkoutForm) {
             checkoutForm.reset();
-            populateProvinces(); // Volver a inicializar los selectores de ubicación
+            populateProvinces();
         }
     }
 
     // Función para manejar el envío del formulario de contacto por WhatsApp
     function handleContactFormSubmit(event) {
-        console.log('handleContactFormSubmit function called.'); // Mensaje de depuración
-        event.preventDefault(); // Prevenir el envío normal del formulario
+        console.log('handleContactFormSubmit function called.');
+        event.preventDefault();
 
-        // Verificar si los elementos de entrada existen antes de intentar acceder a sus valores
         if (!contactNameInput || !contactApellidoInput || !contactMessageTextarea) {
             console.error('Error: One or more contact form input elements are null. Check your HTML IDs.');
-            return; // Detener la ejecución si los elementos no se encuentran
-        }
-
-        // Realizar la validación del formulario
-        // checkValidity() verifica si todos los campos requeridos tienen un valor
-        if (!contactForm.checkValidity()) {
-            contactForm.reportValidity(); // Muestra los mensajes de error de validación del navegador
-            console.log('Form validation failed. Please fill all required fields.'); // Mensaje de depuración
             return;
         }
-        console.log('Form validation passed.'); // Mensaje de depuración
 
-        // Obtener los valores de los campos y eliminar espacios en blanco al inicio y al final
+        if (!contactForm.checkValidity()) {
+            contactForm.reportValidity();
+            console.log('Form validation failed. Please fill all required fields.');
+            return;
+        }
+        console.log('Form validation passed.');
+
         const nombre = contactNameInput.value.trim();
         const apellido = contactApellidoInput.value.trim();
         const mensaje = contactMessageTextarea.value.trim();
 
-        // Volver a verificar si los campos están vacíos después de eliminar espacios en blanco
-        // Esto es importante porque un campo con solo espacios en blanco pasa checkValidity()
         if (!nombre || !apellido || !mensaje) {
-            console.log('One or more required fields are empty after trimming whitespace.'); // Mensaje de depuración
-            // Puedes reportar la validez de nuevo si quieres un mensaje específico, pero el 'required' de HTML ya lo maneja
+            console.log('One or more required fields are empty after trimming whitespace.');
             return;
         }
 
-        const phoneNumber = '+593985961866'; // Reemplaza con tu número de WhatsApp de Ecuador
+        const phoneNumber = '+593985961866';
 
         let whatsappMessage = `¡Hola! Tengo un mensaje desde el formulario de contacto de Milidonas:\n\n`;
         whatsappMessage += `*Nombre:* ${nombre}\n`;
         whatsappMessage += `*Apellido:* ${apellido}\n`;
         whatsappMessage += `*Mensaje:*\n${mensaje}`;
 
-        console.log('WhatsApp message to send:', whatsappMessage); // Mensaje de depuración
+        console.log('WhatsApp message to send:', whatsappMessage);
 
         const encodedMessage = encodeURIComponent(whatsappMessage);
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
-        console.log('Opening WhatsApp URL:', whatsappUrl); // Mensaje de depuración
+        console.log('Opening WhatsApp URL:', whatsappUrl);
         try {
             window.open(whatsappUrl, '_blank');
-            console.log('WhatsApp URL opened successfully.'); // Mensaje de depuración
+            console.log('WhatsApp URL opened successfully.');
         } catch (e) {
-            console.error('Error opening WhatsApp URL:', e); // Mensaje de error
-            // Opcionalmente, puedes mostrar un mensaje al usuario si la ventana no se abre
-            // alert('No se pudo abrir WhatsApp. Por favor, asegúrate de tener una aplicación de WhatsApp instalada o inténtalo más tarde.');
+            console.error('Error opening WhatsApp URL:', e);
         }
 
-        // Limpiar el formulario después de enviar
         contactForm.reset();
-        console.log('Formulario de contacto limpiado.'); // Mensaje de depuración
-        console.log('Mensaje de contacto enviado por WhatsApp.'); // Mensaje de depuración
+        console.log('Formulario de contacto limpiado.');
+        console.log('Mensaje de contacto enviado por WhatsApp.');
     }
 
-    // --- Nuevas funciones para compartir productos ---
+    // --- Lógica para Comentarios (Firebase Firestore) ---
 
-    // Función para copiar el enlace del producto al portapapeles
-    async function copyShareLink(productId, buttonElement) {
-        const currentPath = window.location.pathname;
-        const baseUrl = currentPath.substring(0, currentPath.lastIndexOf('/'));
-        const shareUrl = `${window.location.origin}${baseUrl}/products.html?id=${productId}`;
+    async function handleCommentSubmit(event) {
+        event.preventDefault();
+
+        if (!isAuthReady) {
+            showCustomAlert('El sistema de comentarios no está listo. Por favor, inténtalo de nuevo en unos segundos.');
+            return;
+        }
+
+        if (!commentForm.checkValidity()) {
+            commentForm.reportValidity();
+            return;
+        }
+
+        const name = commentNameInput.value.trim();
+        const apellido = commentApellidoInput.value.trim();
+        const socialLink = socialLinkInput.value.trim();
+        const commentText = commentTextarea.value.trim();
+
+        if (!name || !apellido || !commentText) {
+            showCustomAlert('Por favor, completa todos los campos requeridos del comentario.');
+            return;
+        }
 
         try {
-            // Usar document.execCommand('copy') como fallback para entornos que no soportan navigator.clipboard
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(shareUrl);
-            } else {
-                const textarea = document.createElement('textarea');
-                textarea.value = shareUrl;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-            }
+            // Referencia a la colección de comentarios (pública)
+            const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/comments`);
 
-            // Feedback visual al usuario
-            const originalText = buttonElement.innerHTML;
-            buttonElement.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-            buttonElement.disabled = true; // Deshabilitar temporalmente
+            await addDoc(commentsCollectionRef, {
+                name: name,
+                lastName: apellido,
+                socialLink: socialLink,
+                commentText: commentText,
+                timestamp: serverTimestamp(), // Marca de tiempo del servidor para ordenar
+                userId: userId // ID del usuario que publica el comentario
+            });
 
-            setTimeout(() => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.disabled = false; // Habilitar de nuevo
-            }, 2000); // Volver al texto original después de 2 segundos
-
-            console.log('Enlace copiado:', shareUrl);
-        } catch (err) {
-            console.error('Error al copiar el enlace:', err);
-            // Puedes mostrar un mensaje de error al usuario si la copia falla
-            const originalText = buttonElement.innerHTML;
-            buttonElement.innerHTML = '<i class="fas fa-times"></i> Error!';
-            buttonElement.disabled = true;
-            setTimeout(() => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.disabled = false;
-            }, 2000);
+            showCustomAlert('¡Gracias! Tu comentario ha sido publicado.');
+            commentForm.reset(); // Limpiar el formulario
+        } catch (error) {
+            console.error("Error al añadir el comentario a Firestore:", error);
+            showCustomAlert('Hubo un error al publicar tu comentario. Por favor, inténtalo de nuevo.');
         }
     }
 
-    // Función para manejar el deep linking a un producto específico
-    function handleProductDeepLink() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
-
-        if (productId) {
-            // Esperar un momento para asegurar que los productos se hayan renderizado
-            setTimeout(() => {
-                const productElement = document.getElementById(productId);
-                if (productElement) {
-                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Opcional: resaltar el producto por un momento
-                    productElement.style.transition = 'box-shadow 0.5s ease-in-out';
-                    productElement.style.boxShadow = '0 0 15px 5px rgba(52, 152, 219, 0.7)'; // Azul vibrante
-                    setTimeout(() => {
-                        productElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)'; // Volver a la sombra original
-                    }, 3000);
-                } else {
-                    console.warn(`Producto con ID "${productId}" no encontrado.`);
-                }
-            }, 500); // Pequeño retraso para asegurar que el DOM esté listo
+    function loadComments() {
+        if (!isAuthReady || !commentsList) {
+            // Si la autenticación no está lista o no estamos en la página de comentarios, no hacer nada
+            return;
         }
+
+        const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/comments`);
+        // Consulta para obtener comentarios ordenados por fecha de publicación
+        const q = query(commentsCollectionRef, orderBy("timestamp", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+            commentsList.innerHTML = ''; // Limpiar la lista actual de comentarios
+            if (snapshot.empty) {
+                commentsList.innerHTML = '<p class="no-comments-message">Aún no hay comentarios. ¡Sé el primero en dejar uno!</p>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const commentData = doc.data();
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment-item');
+
+                const date = commentData.timestamp ? new Date(commentData.timestamp.toDate()).toLocaleString() : 'Fecha desconocida';
+
+                let socialLinkHtml = '';
+                if (commentData.socialLink) {
+                    const iconClass = commentData.socialLink.includes('facebook.com') ? 'fab fa-facebook' :
+                                      commentData.socialLink.includes('instagram.com') ? 'fab fa-instagram' :
+                                      'fas fa-link'; // Icono genérico si no es FB/IG
+                    socialLinkHtml = `<a href="${commentData.socialLink}" target="_blank" rel="noopener noreferrer" class="social-link-icon"><i class="${iconClass}"></i> Ver Perfil</a>`;
+                }
+
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${commentData.name} ${commentData.lastName}</span>
+                        <span class="comment-date">${date}</span>
+                    </div>
+                    <p class="comment-text">${commentData.commentText}</p>
+                    <div class="comment-footer">
+                        ${socialLinkHtml}
+                        <span class="comment-user-id">ID de Usuario: ${commentData.userId.substring(0, 8)}...</span>
+                    </div>
+                `;
+                commentsList.appendChild(commentElement);
+            });
+        }, (error) => {
+            console.error("Error al obtener comentarios de Firestore:", error);
+            commentsList.innerHTML = '<p class="error-message">Error al cargar los comentarios. Por favor, inténtalo de nuevo más tarde.</p>';
+        });
     }
 });
