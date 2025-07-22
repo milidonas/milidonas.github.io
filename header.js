@@ -18,13 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li><a href="products">Nuestras Donas</a></li>
                         <li><a href="about">Sobre Nosotros</a></li>
                         <li><a href="contact">Contacto</a></li>
+                        <li><a href="comments">Comentarios</a></li> <!-- NUEVO ENLACE -->
                     </ul>
                 </nav>
                 <div class="header-right">
                     <button class="menu-toggle" aria-label="Abrir menú">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <a href="checkout" class="cart-link"> <!-- CAMBIO AQUÍ: de "cart" a "checkout" -->
+                    <a href="checkout" class="cart-link">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cart-count" class="cart-count">0</span>
                     </a>
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li><a href="products">Nuestras Donas</a></li>
                         <li><a href="about">Sobre Nosotros</a></li>
                         <li><a href="contact">Contacto</a></li>
+                        <li><a href="comments">Comentarios</a></li> <!-- NUEVO ENLACE MÓVIL -->
                     </ul>
                 </nav>
             </div>
