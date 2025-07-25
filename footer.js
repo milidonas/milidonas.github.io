@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <ul>
                             <li><a href="#">Términos y Condiciones</a></li>
                             <li><a href="#">Política de Privacidad</a></li>
-                            <li><a href="#">Política de Cookies</a></li>
-                            <li><a href="contact.html">Contacto</a></li>
+                            <li><a href="returns">Política de Devoluciones</a></li>
+                            <li><a href="contact">Contacto</a></li>
                         </ul>
                     </div>
                     <div class="footer-section">
