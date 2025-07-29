@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "nombre": "Capricho de Donas Surtida",
                     "descripcion": "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 🤤 Disfruta de una deliciosa combinación: mini donas con chocolate y trocitos de Oreo 🍪🍫, y otras glaseadas con coloridos confites ✨. ¡El tamaño perfecto para un capricho dulce en cualquier momento! 🎉",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "precio": 2.50,
                     "imagen": "IMAGEN/md1.png"
                 },
                 {
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "nombre": "Un Momento Choco & Coco",
                     "descripcion": "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido y confites crujientes 🌈 Coco: dulce de leche + coco rallado para un toque tropical 🥥✨  Perfectas para compartir, consentirte o alegrar tu día 💖 ¡Choco & Coco, el dúo que endulza tu antojo! 🍩💥",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "precio": 2.50,
                     "imagen": "IMAGEN/md2.png"
                 },
                 {
@@ -141,15 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     "nombre": "ChocoCrush & CookiePop",
                     "descripcion": "Dos minidonas, dos formas de romper la dieta (con gusto).  ChocoCrush: chocolate fundido + confites crujientes 🌈 CookiePop: dulce de leche con trozos de galleta Oreo 🍪✨  Dulces, esponjosas y adictivas. 🎉 ¡Una combinación explosiva para tus antojos! 💣🍩",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "precio": 2.50,
                     "imagen": "IMAGEN/md3.png"
                 },
                 {
                     "id": "dona004",
                     "nombre": "Donitas Dúo Delicia",
-                    "descripcion": "Una explosión de sabor en cada bocado 🤤. Este dúo combina nuestras mini donas 🍩 suaves y esponjosas, cubiertas con una mezcla irresistible de queso rallado 🧀, leche condensada 🥛 y trozos de galleta Oreo 🍫. Perfectas para los amantes de lo dulce 🍬 con un toque único y cremoso 💖. ¡Te las vas a devorar! 😍✨",
+                    "descripcion": "Una explosión de sabor en cada bocado 🤤. Este dúo combina nuestras mini donas 🍩 suaves y esponjosas, cubiertas con una mezcla irresistible de coco rallado 🧀, leche condensada 🥛 y trozos de galleta Oreo 🍫. Perfectas para los amantes de lo dulce 🍬 con un toque único y cremoso 💖. ¡Te las vas a devorar! 😍✨",
                     "unidades": "10 mini donas", // Nuevo campo para las unidades
-                    "precio": 3.00,
+                    "precio": 2.50,
                     "imagen": "IMAGEN/md4.png"
                 }
             ];
