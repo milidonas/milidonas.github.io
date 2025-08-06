@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>&copy; 2025 milidonas. Todos los derechos reservados.</p>
+                <p>&copy; 2025 milidonas. Todos los derechos reservados. Hecho con <i class="fas fa-heart text-danger"></i> en Tulcán, Ecuador.</p>
                 </div>
             </footer>
         `;
