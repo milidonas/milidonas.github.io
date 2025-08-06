@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milidonas - Las mejores donas de Tulcán</title>
+    <!-- AQUÍ REEMPLAZA CON TU FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            padding-top: 76px;
+        }
+        
+        .navbar {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            padding: 15px 0;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,107,107,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            position: relative;
+            padding: 8px 15px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.1;
+            border-radius: 15px;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .navbar-brand:hover::before {
+            opacity: 0.2;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar-nav {
+            gap: 10px;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            color: var(--dark-color) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 10px 18px !important;
+            border-radius: 25px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+            opacity: 0.15;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .cart-container {
+            position: relative;
+            margin-left: 20px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 1.3rem;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, var(--accent-color), #ffd93d);
+            color: var(--dark-color) !important;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 230, 109, 0.4);
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .cart-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 230, 109, 0.6);
+            color: var(--dark-color) !important;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, var(--primary-color), #ff5252);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .navbar-toggler {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255, 107, 107, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggler:hover {
+            background: rgba(255, 107, 107, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.25);
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 107, 107, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary:hover {
+            background: #ffd93d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 230, 109, 0.4);
+        }
+        
+        .section-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-price {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .product-units {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 50px 0 30px;
+        }
+        
+        .footer h5 {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: var(--accent-color);
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .checkout-page {
+            background: #f8f9fa;
+            min-height: calc(100vh - 76px);
+            padding: 40px 0;
+        }
+        
+        .invoice-container {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .invoice-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .invoice-header::before,
+        .invoice-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #f8f9fa;
+        }
+        
+        .invoice-header::before {
+            left: -10px;
+            border-radius: 0 0 50% 0;
+        }
+        
+        .invoice-header::after {
+            right: -10px;
+            border-radius: 0 0 0 50%;
+        }
+        
+        .torn-edge {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .torn-edge::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 8px,
+                white 8px,
+                white 16px
+            );
+        }
+        
+        .special-offers {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .offer-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .offer-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .offer-badge {
+            background: var(--accent-color);
+            color: var(--dark-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 8px;
+        }
+        
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .invoice-container {
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <!-- AQUÍ REEMPLAZA "milidonas" CON TU LOGO SVG -->
+            <a class="navbar-brand" href="#" onclick="showPage('inicio')">
+                <i class="fas fa-cookie-bite me-2"></i>milidonas
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('inicio')">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('ofertas')">Ofertas Especiales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('productos')">Nuestras Donas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('nosotros')">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('contacto')">Contacto</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="cart-container">
+                        <a href="#" onclick="showPage('checkout')" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge" id="cartCount">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inicio Page -->
+    <div id="inicio" class="page-content active">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="hero-content">
+                            <h1 class="display-4 fw-bold mb-4">¡Bienvenidos a milidonas!</h1>
+                            <p class="lead mb-4">Las donas más deliciosas de Tulcán, hechas con amor y los mejores ingredientes. Endulza tu día con nuestras creaciones únicas.</p>
+                            <a href="#" onclick="showPage('productos')" class="btn btn-primary btn-lg">
+                                <i class="fas fa-cookie-bite me-2"></i>Ver Nuestras Donas
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=500&fit=crop&crop=center" 
+                             alt="Deliciosas donas" class="img-fluid rounded-circle shadow-lg" 
+                             style="max-width: 400px; border: 8px solid rgba(255,255,255,0.2);">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-4">
+                        <div class="p-4">
+                            <i class="fas fa-heart text-danger fa-3x mb-3"></i>
+                            <h4>Hechas con Amor</h4>
+                            <p>Cada dona es preparada con cariño y dedicación para brindarte la mejor experiencia.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="p-4">
+                            <i class="fas fa-leaf text-success fa-3x mb-3"></i>
+                            <h4>Ingredientes Frescos</h4>
+                            <p>Utilizamos solo los mejores ingredientes frescos y de calidad premium.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="p-4">
+                            <i class="fas fa-truck text-info fa-3x mb-3"></i>
+                            <h4>Entrega Rápida</h4>
+                            <p>Entregamos tus donas favoritas directamente en tu puerta en Tulcán y alrededores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Ofertas Especiales Page -->
+    <div id="ofertas" class="page-content">
+        <section class="special-offers">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-white">Ofertas Especiales</h2>
+                    <p class="lead">¡No te pierdas nuestras increíbles promociones!</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="offer-card">
+                            <div class="offer-badge">¡OFERTA!</div>
+                            <h3>Pack Familiar</h3>
+                            <p class="mb-3">12 donas surtidas + 2 bebidas</p>
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="text-decoration-line-through me-2 opacity-75">$18.00</span>
+                                <span class="h4 mb-0 text-warning">$15.00</span>
+                            </div>
+                            <button class="btn btn-light" onclick="addToCart('Pack Familiar', 15.00, 12)">
+                                <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="offer-card">
+                            <div class="offer-badge">¡2x1!</div>
+                            <h3>Martes de Donas</h3>
+                            <p class="mb-3">Compra 6 donas y llévate 6 gratis</p>
+                            <div class="text-center mb-3">
+                                <span class="h4 text-warning">Solo $8.00</span>
+                            </div>
+                            <button class="btn btn-light" onclick="addToCart('Martes 2x1', 8.00, 12)">
+                                <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Productos Page -->
+    <div id="productos" class="page-content">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Nuestras Donas</h2>
+                    <p class="lead">Descubre nuestra deliciosa variedad de donas artesanales</p>
+                </div>
+                
+                <div class="row" id="productContainer">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Sobre Nosotros Page -->
+    <div id="nosotros" class="page-content">
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Sobre Nosotros</h2>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop&crop=center" 
+                             alt="Nuestra panadería" class="img-fluid rounded shadow">
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Nuestra Historia</h3>
+                        <p>milidonas nació del amor por la repostería y el deseo de compartir momentos dulces con nuestra comunidad en Tulcán. Desde nuestros inicios, nos hemos dedicado a crear donas únicas y deliciosas que alegran el día de nuestros clientes.</p>
+                        
+                        <h3>Nuestra Misión</h3>
+                        <p>Crear momentos de felicidad a través de nuestras donas artesanales, utilizando ingredientes frescos y de calidad, mientras brindamos un servicio excepcional a cada cliente.</p>
+                        
+                        <h3>¿Por qué elegirnos?</h3>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Ingredientes 100% frescos</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Recetas tradicionales con toques innovadores</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Atención personalizada</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Entrega puntual</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Section -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h3 class="text-center mb-4">Preguntas Frecuentes</h3>
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        ¿Cuál es el tiempo de entrega?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Nuestro tiempo de entrega es de 30 a 60 minutos dentro de Tulcán. Para pedidos especiales o grandes cantidades, recomendamos hacer el pedido con al menos 2 horas de anticipación.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        ¿Hacen donas personalizadas?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        ¡Sí! Realizamos donas personalizadas para eventos especiales como cumpleaños, bodas y celebraciones. Contáctanos con al menos 24 horas de anticipación.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        ¿Cuáles son las formas de pago?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Aceptamos transferencias bancarias, efectivo contra entrega y pagos móviles. Una vez que envíes tu pedido por WhatsApp, te proporcionaremos toda la información de pago.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contacto Page -->
+    <div id="contacto" class="page-content">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Contacto</h2>
+                    <p class="lead">¿Tienes alguna pregunta? ¡Estamos aquí para ayudarte!</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="contact-form">
+                            <h4 class="mb-4">Envíanos un mensaje</h4>
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nombre *</label>
+                                        <input type="text" class="form-control" id="contactName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Apellido *</label>
+                                        <input type="text" class="form-control" id="contactLastName" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Mensaje *</label>
+                                    <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fab fa-whatsapp me-2"></i>Enviar por WhatsApp
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="contact-info p-4 bg-white rounded shadow">
+                            <h4 class="mb-4">Información de Contacto</h4>
+                            
+                            <div class="mb-3">
+                                <i class="fas fa-envelope text-primary me-3"></i>
+                                <strong>Email:</strong><br>
+                                milidonas.info@gmail.com
+                            </div>
+                            
+                            <div class="mb-3">
+                                <i class="fas fa-phone text-primary me-3"></i>
+                                <strong>Celular:</strong><br>
+                                +593 98 596 1866
+                            </div>
+                            
+                            <div class="mb-3">
+                                <i class="fas fa-clock text-primary me-3"></i>
+                                <strong>Horario:</strong><br>
+                                Lun - Sab: 09:00 - 17:00
+                            </div>
+                            
+                            <div class="mb-3">
+                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                                <strong>Ubicación:</strong><br>
+                                Tulcán, Ecuador
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Checkout Page -->
+    <div id="checkout" class="page-content">
+        <div class="checkout-page">
+            <div class="container">
+                <div class="invoice-container">
+                    <div class="invoice-header torn-edge">
+                        <div class="text-center">
+                            <h2 class="mb-0"><i class="fas fa-cookie-bite me-2"></i>milidonas</h2>
+                            <p class="mb-0">Carrito de Compras</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h4 class="mb-4">Información Personal</h4>
+                                <form id="checkoutForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nombre *</label>
+                                            <input type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Apellido *</label>
+                                            <input type="text" class="form-control" id="lastName" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">País</label>
+                                        <select class="form-control" id="country" disabled>
+                                            <option value="Ecuador">Ecuador</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Provincia *</label>
+                                            <select class="form-control" id="province" required>
+                                                <option value="">Seleccionar provincia</option>
+                                                <option value="Carchi">Carchi</option>
+                                                <option value="Imbabura">Imbabura</option>
+                                                <option value="Pichincha">Pichincha</option>
+                                                <option value="Esmeraldas">Esmeraldas</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Cantón *</label>
+                                            <select class="form-control" id="canton" required>
+                                                <option value="">Seleccionar cantón</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Dirección de las calles *</label>
+                                        <input type="text" class="form-control" id="streetAddress" placeholder="Ej: Calle Sucre y Bolívar" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Referencia</label>
+                                        <input type="text" class="form-control" id="reference" placeholder="Ej: Casa blanca con portón azul, frente al parque">
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="col-lg-5">
+                                <h4 class="mb-4">Tu Pedido</h4>
+                                <div id="cartItems">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                                        <p>Tu carrito está vacío</p>
+                                        <a href="#" onclick="showPage('productos')" class="btn btn-primary">
+                                            Ver Productos
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div id="cartSummary" style="display: none;">
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Total: </strong>
+                                        <strong id="cartTotal">$0.00</strong>
+                                    </div>
+                                    <button class="btn btn-success w-100 mt-3" onclick="sendWhatsAppOrder()">
+                                        <i class="fab fa-whatsapp me-2"></i>Enviar Pedido por WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Política de Devoluciones</a></li>
+                        <li><a href="#" onclick="showPage('contacto')">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Redes Sociales</h5>
+                    <div class="social-icons">
+                        <a href="https://facebook.com/milidonas.ec" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/milidonas.ec" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://tiktok.com/@karl.milena" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="mailto:milidonas.info@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Información</h5>
+                    <p><i class="fas fa-envelope me-2"></i>milidonas.info@gmail.com</p>
+                    <p><i class="fas fa-phone me-2"></i>+593 98 596 1866</p>
+                    <p><i class="fas fa-clock me-2"></i>Lun - Sab: 09:00 - 17:00</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>Tulcán, Ecuador</p>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Newsletter</h5>
+                    <p>Suscríbete para recibir nuestras ofertas especiales</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Tu email">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2025 milidonas. Todos los derechos reservados. Hecho con <i class="fas fa-heart text-danger"></i> en Tulcán, Ecuador.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Variables globales
+        let cart = [];
+        let products = [
+            {
+                id: 1,
+                name: "Donas Clásicas Glaseadas",
+                description: "Donas tradicionales con glaseado de azúcar, suaves y esponjosas.",
+                units: 6,
+                price: 8.00,
+                image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&h=300&fit=crop&crop=center"
+            },
+            {
+                id: 2,
+                name: "Donas de Chocolate",
+                description: "Deliciosas donas cubiertas con chocolate derretido y chispas de colores.",
+                units: 6,
+                price: 9.50,
+                image: "https://images.unsplash.com/photo-1549007908-b74cb92c2efd?w=400&h=300&fit=crop&crop=center"
+            },
+            {
+                id: 3,
+                name: "Donas Rellenas de Dulce de Leche",
+                description: "Donas esponjosas rellenas con cremoso dulce de leche casero.",
+                units: 4,
+                price: 10.00,
+                image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=300&fit=crop&crop=center"
+            },
+            {
+                id: 4,
+                name: "Donas de Fresa",
+                description: "Donas con glaseado de fresa natural y trocitos de fruta fresca.",
+                units: 6,
+                price: 9.00,
+                image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=300&fit=crop&crop=center"
+            },
+            {
+                id: 5,
+                name: "Donas Veganas",
+                description: "Donas 100% veganas, sin ingredientes de origen animal pero igual de deliciosas.",
+                units: 4,
+                price: 11.00,
+                image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop&crop=center"
+            },
+            {
+                id: 6,
+                name: "Mix Especial milidonas",
+                description: "Una selección de nuestras mejores donas: clásicas, chocolate, fresa y dulce de leche.",
+                units: 12,
+                price: 18.00,
+                image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=300&fit=crop&crop=center"
+            }
+        ];
+
+        // Datos de provincias y cantones
+        const locationData = {
+            "Carchi": ["Tulcán", "Bolívar", "Espejo", "Mira", "Montúfar", "San Pedro de Huaca"],
+            "Imbabura": ["Ibarra", "Antonio Ante", "Cotacachi", "Otavalo", "Pimampiro", "San Miguel de Urcuquí"],
+            "Pichincha": ["Quito", "Cayambe", "Mejía", "Pedro Moncayo", "Pedro Vicente Maldonado", "Puerto Quito", "Rumiñahui", "San Miguel de los Bancos"],
+            "Esmeraldas": ["Esmeraldas", "Eloy Alfaro", "Muisne", "Quinindé", "San Lorenzo", "Atacames"]
+        };
+
+        // Navegación entre páginas
+        function showPage(pageId) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar la página seleccionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Actualizar navbar activa
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Cargar productos si es la página de productos
+            if (pageId === 'productos') {
+                loadProducts();
+            }
+        }
+
+        // Cargar productos
+        function loadProducts() {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="product-card">
+                            <img src="${product.image}" alt="${product.name}" class="product-image">
+                            <div class="product-info">
+                                <h5 class="mb-2">${product.name}</h5>
+                                <p class="text-muted mb-3">${product.description}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="product-units">${product.units} donas</span>
+                                    <span class="product-price">${product.price.toFixed(2)}</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary flex-fill" onclick="addToCart('${product.name}', ${product.price}, ${product.units})">
+                                        <i class="fas fa-cart-plus"></i> Agregar
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="shareProduct(${product.id})" title="Compartir">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += productCard;
+            });
+        }
+
+        // Agregar al carrito
+        function addToCart(name, price, units) {
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    units: units,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            
+            // Mostrar notificación
+            alert(`${name} agregado al carrito!`);
+        }
+
+        // Actualizar visualización del carrito
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartSummary = document.getElementById('cartSummary');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            // Actualizar contador
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Actualizar items del carrito
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                        <p>Tu carrito está vacío</p>
+                        <a href="#" onclick="showPage('productos')" class="btn btn-primary">Ver Productos</a>
+                    </div>
+                `;
+                cartSummary.style.display = 'none';
+            } else {
+                let itemsHTML = '';
+                let total = 0;
+                
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    itemsHTML += `
+                        <div class="cart-item p-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-1">${item.name}</h6>
+                                <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <p class="text-muted small mb-2">${item.units} donas por caja</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                    <input type="number" class="quantity-input" value="${item.quantity}" min="1" 
+                                           onchange="updateQuantity(${index}, 0, this.value)">
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                                </div>
+                                <strong>${itemTotal.toFixed(2)}</strong>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = itemsHTML;
+                cartTotal.textContent = `${total.toFixed(2)}`;
+                cartSummary.style.display = 'block';
+            }
+        }
+
+        // Actualizar cantidad
+        function updateQuantity(index, change, newValue = null) {
+            if (newValue !== null) {
+                cart[index].quantity = Math.max(1, parseInt(newValue) || 1);
+            } else {
+                cart[index].quantity = Math.max(1, cart[index].quantity + change);
+            }
+            updateCartDisplay();
+        }
+
+        // Remover del carrito
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        // Compartir producto
+        function shareProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const url = `${window.location.origin}${window.location.pathname}?product=${productId}`;
+                const text = `¡Mira estas deliciosas ${product.name} de milidonas! ${product.units} donas por solo ${product.price}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: product.name,
+                        text: text,
+                        url: url
+                    });
+                } else {
+                    // Fallback: copiar al portapapeles
+                    navigator.clipboard.writeText(`${text} - ${url}`);
+                    alert('¡Enlace copiado al portapapeles!');
+                }
+            }
+        }
+
+        // Manejar selección de provincia
+        document.addEventListener('DOMContentLoaded', function() {
+            const provinceSelect = document.getElementById('province');
+            const cantonSelect = document.getElementById('canton');
+            
+            if (provinceSelect && cantonSelect) {
+                provinceSelect.addEventListener('change', function() {
+                    const selectedProvince = this.value;
+                    cantonSelect.innerHTML = '<option value="">Seleccionar cantón</option>';
+                    
+                    if (selectedProvince && locationData[selectedProvince]) {
+                        locationData[selectedProvince].forEach(canton => {
+                            cantonSelect.innerHTML += `<option value="${canton}">${canton}</option>`;
+                        });
+                    }
+                });
+            }
+        });
+
+        // Enviar pedido por WhatsApp
+        function sendWhatsAppOrder() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const province = document.getElementById('province').value;
+            const canton = document.getElementById('canton').value;
+            const streetAddress = document.getElementById('streetAddress').value;
+            const reference = document.getElementById('reference').value;
+            
+            if (!firstName || !lastName || !province || !canton || !streetAddress) {
+                alert('Por favor completa todos los campos requeridos.');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío.');
+                return;
+            }
+            
+            let message = `¡Hola! Quiero hacer un pedido de milidonas 🍩\n\n`;
+            message += `*DATOS PERSONALES:*\n`;
+            message += `Nombre: ${firstName} ${lastName}\n`;
+            message += `Provincia: ${province}\n`;
+            message += `Cantón: ${canton}\n`;
+            message += `Dirección: ${streetAddress}\n`;
+            if (reference) {
+                message += `Referencia: ${reference}\n`;
+            }
+            message += `\n*MI PEDIDO:*\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `• ${item.name}\n`;
+                message += `  Cantidad: ${item.quantity} caja(s) (${item.units} donas c/u)\n`;
+                message += `  Subtotal: ${itemTotal.toFixed(2)}\n\n`;
+            });
+            
+            message += `*TOTAL: ${total.toFixed(2)}*\n\n`;
+            message += `¡Gracias! Espero su confirmación y detalles de pago. 😊`;
+            
+            const whatsappURL = `https://wa.me/593985961866?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Enviar formulario de contacto
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('contactName').value;
+                    const lastName = document.getElementById('contactLastName').value;
+                    const message = document.getElementById('contactMessage').value;
+                    
+                    if (!name || !lastName || !message) {
+                        alert('Por favor completa todos los campos.');
+                        return;
+                    }
+                    
+                    const whatsappMessage = `¡Hola! Soy ${name} ${lastName}.\n\n${message}\n\nGracias por su atención.`;
+                    const whatsappURL = `https://wa.me/593985961866?text=${encodeURIComponent(whatsappMessage)}`;
+                    window.open(whatsappURL, '_blank');
+                });
+            }
+        });
+
+        // Efecto scroll en navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateCartDisplay();
+            
+            // Verificar si hay un producto específico en la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product');
+            if (productId) {
+                showPage('productos');
+                // Hacer scroll al producto específico si existe
+                setTimeout(() => {
+                    const productElement = document.querySelector(`[data-product-id="${productId}"]`);
+                    if (productElement) {
+                        productElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
