@@ -539,7 +539,7 @@
         <div class="container">
             <!-- AQUÍ REEMPLAZA "milidonas" CON TU LOGO SVG -->
             <a class="navbar-brand" href="#" onclick="showPage('inicio')">
-                <i class="fas fa-cookie-bite me-2"></i>milidonas
+                <img src="SM/LG_WB.svg" alt="Milidonas Logo" height="40">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -1002,62 +1002,66 @@
         // Variables globales
         let cart = [];
         let products = [
-            {
-                id: 1,
-                name: "Donas Clásicas Glaseadas",
-                description: "Donas tradicionales con glaseado de azúcar, suaves y esponjosas.",
-                units: 6,
-                price: 8.00,
-                image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&h=300&fit=crop&crop=center"
-            },
-            {
-                id: 2,
-                name: "Donas de Chocolate",
-                description: "Deliciosas donas cubiertas con chocolate derretido y chispas de colores.",
-                units: 6,
-                price: 9.50,
-                image: "https://images.unsplash.com/photo-1549007908-b74cb92c2efd?w=400&h=300&fit=crop&crop=center"
-            },
-            {
-                id: 3,
-                name: "Donas Rellenas de Dulce de Leche",
-                description: "Donas esponjosas rellenas con cremoso dulce de leche casero.",
-                units: 4,
-                price: 10.00,
-                image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=300&fit=crop&crop=center"
-            },
-            {
-                id: 4,
-                name: "Donas de Fresa",
-                description: "Donas con glaseado de fresa natural y trocitos de fruta fresca.",
-                units: 6,
-                price: 9.00,
-                image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=300&fit=crop&crop=center"
-            },
-            {
-                id: 5,
-                name: "Donas Veganas",
-                description: "Donas 100% veganas, sin ingredientes de origen animal pero igual de deliciosas.",
-                units: 4,
-                price: 11.00,
-                image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop&crop=center"
-            },
-            {
-                id: 6,
-                name: "Mix Especial milidonas",
-                description: "Una selección de nuestras mejores donas: clásicas, chocolate, fresa y dulce de leche.",
-                units: 12,
-                price: 18.00,
-                image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=300&fit=crop&crop=center"
-            }
+                {
+                  id: 1,
+                  name: "Capricho de Donas Surtida",
+                  description: "¡Satisface tu antojo con nuestra Caja de 10 Mini Donas Capricho de Donas Surtidas! 😋 Disfruta cada bocado.",
+                  units: 10,
+                  price: 2.50,
+                  image: "IMAGEN/md1.png",
+                },
+                {
+                  id: 2,
+                  name: "Un Momento Choco & Coco",
+                  description: "Dos minidonas, dos sabores únicos en una sola caja de antojo. Choco: esponjosa, con chocolate derretido. Coco: suave, con coco rallado.",
+                  units: 10,
+                  price: 2.50,
+                  image: "IMAGEN/md2.png",
+                },
+                {
+                  id: 3,
+                  name: "ChocoCrush & CookiePop",
+                  description: "Dos minidonas, dos formas de romper la dieta (con gusto). ChocoCrush: chocolate fundido + confites. CookiePop: chispas y galleta.",
+                  units: 10,
+                  price: 2.50,
+                  image: "IMAGEN/md3.png",
+                },
+                {
+                  id: 4,
+                  name: "Donitas Dúo Delicia",
+                  description: "Una explosión de sabor en cada bocado 😋. Este dúo combina nuestras mini donas 🍩 suaves y esponjosas con rellenos irresistibles.",
+                  units: 10,
+                  price: 2.50,
+                  image: "IMAGEN/md4.png",
+                }
         ];
 
         // Datos de provincias y cantones
         const locationData = {
-            "Carchi": ["Tulcán", "Bolívar", "Espejo", "Mira", "Montúfar", "San Pedro de Huaca"],
-            "Imbabura": ["Ibarra", "Antonio Ante", "Cotacachi", "Otavalo", "Pimampiro", "San Miguel de Urcuquí"],
-            "Pichincha": ["Quito", "Cayambe", "Mejía", "Pedro Moncayo", "Pedro Vicente Maldonado", "Puerto Quito", "Rumiñahui", "San Miguel de los Bancos"],
-            "Esmeraldas": ["Esmeraldas", "Eloy Alfaro", "Muisne", "Quinindé", "San Lorenzo", "Atacames"]
+            "Azuay": ["Cuenca", "Gualaceo", "Paute"],
+            "Bolívar": ["Guaranda", "Chillanes", "San Miguel"],
+            "Cañar": ["Azogues", "Cañar", "La Troncal"],
+            "Carchi": ["Tulcán", "Bolívar", "Espejo", "Montúfar", "San Pedro de Huaca", "Mira"],
+            "Chimborazo": ["Riobamba", "Alausí", "Guano"],
+            "Cotopaxi": ["Latacunga", "La Maná", "Pujilí"],
+            "El Oro": ["Machala", "Pasaje", "Santa Rosa"],
+            "Esmeraldas": ["Esmeraldas", "Atacames", "Quinindé"],
+            "Galápagos": ["San Cristóbal", "Isabela", "Santa Cruz"],
+            "Guayas": ["Guayaquil", "Daule", "Milagro", "Samborondón", "Durán"],
+            "Imbabura": ["Ibarra", "Otavalo", "Cotacachi", "Antonio Ante", "Pimampiro", "San Miguel de Urcuquí"],
+            "Loja": ["Loja", "Catamayo", "Saraguro"],
+            "Los Ríos": ["Babahoyo", "Quevedo", "Vinces"],
+            "Manabí": ["Portoviejo", "Manta", "Chone", "Jipijapa", "Montecristi", "Sucre"],
+            "Morona Santiago": ["Macas", "Gualaquiza", "Sucúa"],
+            "Napo": ["Tena", "Archidona", "El Chaco"],
+            "Orellana": ["Coca", "Aguarico", "La Joya de los Sachas"],
+            "Pastaza": ["Puyo", "Mera", "Santa Clara"],
+            "Pichincha": ["Quito", "Cayambe", "Machachi", "Rumiñahui", "Mejía", "Pedro Moncayo", "San Miguel de los Bancos", "Puerto Quito"],
+            "Santa Elena": ["Santa Elena", "La Libertad", "Salinas"],
+            "Santo Domingo de los Tsáchilas": ["Santo Domingo", "La Concordia"],
+            "Sucumbíos": ["Nueva Loja", "Cascales", "Lago Agrio"],
+            "Tungurahua": ["Ambato", "Baños de Agua Santa", "Pelileo"],
+            "Zamora Chinchipe": ["Zamora", "Yacuambi", "Centinela del Cóndor"]
         };
 
         // Navegación entre páginas
